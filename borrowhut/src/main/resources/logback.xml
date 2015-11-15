@@ -6,7 +6,7 @@
             <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n</pattern>
         </encoder>
     </appender>
-    <logger name="eu.kielczewski" additivity="false" level="TRACE">
+    <logger name="com.borrowhut" additivity="false" level="TRACE">
         <appender-ref ref="stdout"/>
     </logger>
     <root level="WARN">
