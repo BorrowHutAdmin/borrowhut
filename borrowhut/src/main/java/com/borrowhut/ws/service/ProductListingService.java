@@ -3,13 +3,13 @@ package com.borrowhut.ws.service;
 
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-import com.borrowhut.ws.domain.ProductListing;
+
 
 public interface ProductListingService {
-public long getCount();
 
-public ProductListing getProductBylistingid(int prdid,int partyid );
+public JSONObject getProductListingByPlsid(int plsid);
 
 public JSONArray getProductListingByPartyid(int partyid);
 
