@@ -8,13 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class Home {
-	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Home.class);
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String startapllication() {
-		LOGGER.debug("Received request to list all users");
-		LOGGER.info("inside method the value got is ");
-		
+		LOGGER.info("service is running");
 		return "Borrowhut web service is up and running ";
 	}
 }
