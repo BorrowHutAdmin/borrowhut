@@ -59,7 +59,7 @@ public class ProductListingServiceImpl implements ProductListingService {
 		for (ListedProductFeature feature : prdlist.getListedProductFeatures()) {
 			featurelist = featurelist.equals("")
 					? (featurelist + feature.getId().getFtrName() + "," + feature.getLpfFtrValue())
-					: "," + featurelist + feature.getId().getFtrName() + "," + feature.getLpfFtrValue();
+					:  featurelist+","  + feature.getId().getFtrName() + "," + feature.getLpfFtrValue();
 
 		}
 		return featurelist.equals("") ? productlisting : productlisting + "," + featurelist;
