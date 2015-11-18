@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="FEATURE_VALUE")
 @NamedQuery(name="FeatureValue.findAll", query="SELECT f FROM FeatureValue f")
-public class FeatureValue  {
+public class FeatureValue implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId

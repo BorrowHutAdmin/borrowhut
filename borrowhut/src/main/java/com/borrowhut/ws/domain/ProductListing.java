@@ -13,11 +13,12 @@ import java.util.List;
 @Entity
 @Table(name="PRODUCT_LISTING")
 @NamedQuery(name="ProductListing.findAll", query="SELECT p FROM ProductListing p")
-public class ProductListing  implements Serializable{
+public class ProductListing implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/*@EmbeddedId
 	private ProductListingPK id;*/
+	
 	@Id
 	@Column(name="PLS_ID", unique=true, nullable=false)
 	private int plsId;
@@ -38,7 +39,6 @@ public class ProductListing  implements Serializable{
 	public void setPtyId(int ptyId) {
 		this.ptyId = ptyId;
 	}
-
 	@Column(name="PLS_AGREEMENT_SIGNED", length=45)
 	private String plsAgreementSigned;
 
@@ -85,8 +85,8 @@ public class ProductListing  implements Serializable{
 
 	public void setId(ProductListingPK id) {
 		this.id = id;
-	}
-*/
+	}*/
+
 	public String getPlsAgreementSigned() {
 		return this.plsAgreementSigned;
 	}

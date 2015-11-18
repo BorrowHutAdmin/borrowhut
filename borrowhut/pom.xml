@@ -8,7 +8,7 @@
    <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.0.1.RELEASE</version>
+        <version>1.2.7.RELEASE</version>
     </parent>
 
     <name>Example Spring Boot REST Service</name>
@@ -44,6 +44,10 @@
 	    <artifactId>spring-boot-starter-tomcat</artifactId>
 	    <scope>provided</scope>
 	</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jersey</artifactId>
+		</dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>

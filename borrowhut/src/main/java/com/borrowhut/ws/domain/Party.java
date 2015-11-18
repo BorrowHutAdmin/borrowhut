@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name="PARTY")
 @NamedQuery(name="Party.findAll", query="SELECT p FROM Party p")
-public class Party  {
+public class Party implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -62,24 +62,25 @@ public class Party  {
 	@OneToMany(mappedBy="party")
 	private List<BorrowLog> borrowLogs;
 
+	//bi-directional many-to-one association to MyTrustCircle
+	@OneToMany(mappedBy="party1")
+	private List<MyTrustCircle> myTrustCircles1;
+
+	//bi-directional many-to-one association to MyTrustCircle
+	@OneToMany(mappedBy="party2")
+	private List<MyTrustCircle> myTrustCircles2;
+
 	//bi-directional many-to-one association to PartyAuthMech
 	@OneToMany(mappedBy="party")
 	private List<PartyAuthMech> partyAuthMeches;
 
 	//bi-directional many-to-one association to PersonalisedCard
-	
+	@OneToMany(mappedBy="party")
+	private List<PersonalisedCard> personalisedCards;
 
 	//bi-directional many-to-one association to ProductListing
 	@OneToMany(mappedBy="party")
 	private List<ProductListing> productListings;
-
-	//bi-directional many-to-one association to TrustCircle
-	@OneToMany(mappedBy="party1")
-	private List<TrustCircle> trustCircles1;
-
-	//bi-directional many-to-one association to TrustCircle
-	@OneToMany(mappedBy="party2")
-	private List<TrustCircle> trustCircles2;
 
 	public Party() {
 	}
@@ -218,6 +219,50 @@ public class Party  {
 		return borrowLog;
 	}
 
+	public List<MyTrustCircle> getMyTrustCircles1() {
+		return this.myTrustCircles1;
+	}
+
+	public void setMyTrustCircles1(List<MyTrustCircle> myTrustCircles1) {
+		this.myTrustCircles1 = myTrustCircles1;
+	}
+
+	public MyTrustCircle addMyTrustCircles1(MyTrustCircle myTrustCircles1) {
+		getMyTrustCircles1().add(myTrustCircles1);
+		myTrustCircles1.setParty1(this);
+
+		return myTrustCircles1;
+	}
+
+	public MyTrustCircle removeMyTrustCircles1(MyTrustCircle myTrustCircles1) {
+		getMyTrustCircles1().remove(myTrustCircles1);
+		myTrustCircles1.setParty1(null);
+
+		return myTrustCircles1;
+	}
+
+	public List<MyTrustCircle> getMyTrustCircles2() {
+		return this.myTrustCircles2;
+	}
+
+	public void setMyTrustCircles2(List<MyTrustCircle> myTrustCircles2) {
+		this.myTrustCircles2 = myTrustCircles2;
+	}
+
+	public MyTrustCircle addMyTrustCircles2(MyTrustCircle myTrustCircles2) {
+		getMyTrustCircles2().add(myTrustCircles2);
+		myTrustCircles2.setParty2(this);
+
+		return myTrustCircles2;
+	}
+
+	public MyTrustCircle removeMyTrustCircles2(MyTrustCircle myTrustCircles2) {
+		getMyTrustCircles2().remove(myTrustCircles2);
+		myTrustCircles2.setParty2(null);
+
+		return myTrustCircles2;
+	}
+
 	public List<PartyAuthMech> getPartyAuthMeches() {
 		return this.partyAuthMeches;
 	}
@@ -240,6 +285,27 @@ public class Party  {
 		return partyAuthMech;
 	}
 
+	public List<PersonalisedCard> getPersonalisedCards() {
+		return this.personalisedCards;
+	}
+
+	public void setPersonalisedCards(List<PersonalisedCard> personalisedCards) {
+		this.personalisedCards = personalisedCards;
+	}
+
+	public PersonalisedCard addPersonalisedCard(PersonalisedCard personalisedCard) {
+		getPersonalisedCards().add(personalisedCard);
+		personalisedCard.setParty(this);
+
+		return personalisedCard;
+	}
+
+	public PersonalisedCard removePersonalisedCard(PersonalisedCard personalisedCard) {
+		getPersonalisedCards().remove(personalisedCard);
+		personalisedCard.setParty(null);
+
+		return personalisedCard;
+	}
 
 	public List<ProductListing> getProductListings() {
 		return this.productListings;
@@ -261,50 +327,6 @@ public class Party  {
 		productListing.setParty(null);
 
 		return productListing;
-	}
-
-	public List<TrustCircle> getTrustCircles1() {
-		return this.trustCircles1;
-	}
-
-	public void setTrustCircles1(List<TrustCircle> trustCircles1) {
-		this.trustCircles1 = trustCircles1;
-	}
-
-	public TrustCircle addTrustCircles1(TrustCircle trustCircles1) {
-		getTrustCircles1().add(trustCircles1);
-		trustCircles1.setParty1(this);
-
-		return trustCircles1;
-	}
-
-	public TrustCircle removeTrustCircles1(TrustCircle trustCircles1) {
-		getTrustCircles1().remove(trustCircles1);
-		trustCircles1.setParty1(null);
-
-		return trustCircles1;
-	}
-
-	public List<TrustCircle> getTrustCircles2() {
-		return this.trustCircles2;
-	}
-
-	public void setTrustCircles2(List<TrustCircle> trustCircles2) {
-		this.trustCircles2 = trustCircles2;
-	}
-
-	public TrustCircle addTrustCircles2(TrustCircle trustCircles2) {
-		getTrustCircles2().add(trustCircles2);
-		trustCircles2.setParty2(this);
-
-		return trustCircles2;
-	}
-
-	public TrustCircle removeTrustCircles2(TrustCircle trustCircles2) {
-		getTrustCircles2().remove(trustCircles2);
-		trustCircles2.setParty2(null);
-
-		return trustCircles2;
 	}
 
 }

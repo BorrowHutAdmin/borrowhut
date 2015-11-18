@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name="BORROW_LIFECYCLE_EVENT")
 @NamedQuery(name="BorrowLifecycleEvent.findAll", query="SELECT b FROM BorrowLifecycleEvent b")
-public class BorrowLifecycleEvent  {
+public class BorrowLifecycleEvent implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

@@ -1,19 +1,26 @@
 package com.borrowhut.ws.contoller;
+
 import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
+
 import com.borrowhut.ws.service.ProductListingService;
 
-@RestController
+
+@Component
+@Path("/getListedProduct")
 public class ProductListingController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProductListingController.class);
+
 	private final ProductListingService productListingService;
 
 	@Inject
@@ -22,15 +29,19 @@ public class ProductListingController {
 		this.productListingService = productListingService;
 	}
 
-	@RequestMapping(value = "/getListedProduct/partyid/{partyid}", method = RequestMethod.GET)
-	public JSONArray getAllListedProductsBypartyid(@PathVariable("partyid") int partyid) {
+	@GET
+	@Path("/partyid/{partyid}")
+	@Produces("application/json")
+		public JSONArray getAllListedProductsBypartyid(@PathParam("partyid") int partyid) {
 		LOGGER.debug("Received request for product listing for party " + partyid);
 
 		return productListingService.getProductListingByPartyid(partyid);
 	}
 
-	@RequestMapping(value = "/getListedProduct/plsid/{plsid}", method = RequestMethod.GET  )
-	public JSONObject getAllListedProductsByplsid(@PathVariable("plsid") int plsid) {
+	@GET
+	@Path("/plsid/{plsid}")
+	@Produces("application/json")
+	public JSONObject getAllListedProductsByplsid(@PathParam("plsid") int plsid) {
 		LOGGER.debug("Received request for product listing for party " + plsid);
 
 		return productListingService.getProductListingByPlsid(plsid);

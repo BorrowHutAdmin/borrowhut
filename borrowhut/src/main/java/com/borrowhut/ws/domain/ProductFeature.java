@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name="PRODUCT_FEATURE")
 @NamedQuery(name="ProductFeature.findAll", query="SELECT p FROM ProductFeature p")
-public class ProductFeature  {
+public class ProductFeature implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId

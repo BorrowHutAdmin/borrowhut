@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="PARTY_AUTH_MECH")
 @NamedQuery(name="PartyAuthMech.findAll", query="SELECT p FROM PartyAuthMech p")
-public class PartyAuthMech  {
+public class PartyAuthMech implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId

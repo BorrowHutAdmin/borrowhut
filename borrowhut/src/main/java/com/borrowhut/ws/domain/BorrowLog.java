@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name="BORROW_LOG")
 @NamedQuery(name="BorrowLog.findAll", query="SELECT b FROM BorrowLog b")
-public class BorrowLog  {
+public class BorrowLog implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId

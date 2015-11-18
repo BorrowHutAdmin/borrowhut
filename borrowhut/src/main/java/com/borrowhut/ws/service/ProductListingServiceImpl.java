@@ -3,10 +3,13 @@ package com.borrowhut.ws.service;
 import java.util.List;
 
 import javax.inject.Inject;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+
 import com.borrowhut.ws.domain.ListedProductFeature;
 import com.borrowhut.ws.domain.Product;
 import com.borrowhut.ws.domain.ProductListing;
@@ -35,6 +38,7 @@ public class ProductListingServiceImpl implements ProductListingService {
 	}
 
 	@Override
+	@Transactional
 	public JSONArray getProductListingByPartyid(int partyid) {
 		List<ProductListing> prdlisting = productListingRepository.findByptyId(partyid);
 		JSONArray jsonrecords = new JSONArray();
@@ -49,7 +53,7 @@ public class ProductListingServiceImpl implements ProductListingService {
 		}
 		return jsonrecords;
 	}
-
+	@Transactional
 	private String getProductlsiting(ProductListing prdlist) {
 		String productlisting = "";
 		Product pdt = prdlist.getProduct();
