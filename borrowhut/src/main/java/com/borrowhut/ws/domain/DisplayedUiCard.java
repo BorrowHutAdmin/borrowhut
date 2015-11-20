@@ -14,9 +14,20 @@ import javax.persistence.*;
 public class DisplayedUiCard implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private DisplayedUiCardPK id;
+	/*@EmbeddedId
+	private DisplayedUiCardPK id;*/
 
+	@Id
+	@Column(name="ID", unique=true, nullable=false)
+	private int id;
+
+	@Column(name="UIC_ID", insertable=false, updatable=false, unique=true, nullable=false, length=10)
+	private String uicId;
+
+	@Column(name="TOKEN_NAME", unique=true, nullable=false, length=30)
+	private String tokenName;
+	
+	
 	@Column(name="TOKEN_VALUE", length=45)
 	private String tokenValue;
 
@@ -28,14 +39,30 @@ public class DisplayedUiCard implements Serializable {
 	public DisplayedUiCard() {
 	}
 
-	public DisplayedUiCardPK getId() {
+	/*public DisplayedUiCardPK getId() {
 		return this.id;
 	}
 
 	public void setId(DisplayedUiCardPK id) {
 		this.id = id;
-	}
+	}*/
 
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getUicId() {
+		return this.uicId;
+	}
+	public void setUicId(String uicId) {
+		this.uicId = uicId;
+	}
+	public String getTokenName() {
+		return this.tokenName;
+	}
+	public void setTokenName(String tokenName) {
+		this.tokenName = tokenName;
+	}
 	public String getTokenValue() {
 		return this.tokenValue;
 	}
