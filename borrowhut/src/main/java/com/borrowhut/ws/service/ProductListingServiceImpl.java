@@ -26,6 +26,7 @@ public class ProductListingServiceImpl implements ProductListingService {
 	}
 
 	@Override
+	@Transactional
 	public JSONObject getProductListingByPlsid(int plsid) {
 		ProductListing prod = productListingRepository.findOne(plsid);
 		JSONObject object = new JSONObject();
