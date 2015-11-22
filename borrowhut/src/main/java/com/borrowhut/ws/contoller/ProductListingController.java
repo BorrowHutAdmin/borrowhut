@@ -25,7 +25,7 @@ public class ProductListingController {
 
 	@Inject
 	public ProductListingController(final ProductListingService productListingService) {
-		LOGGER.info("intialized");
+		LOGGER.debug("ProductListingController resource intialized");
 		this.productListingService = productListingService;
 	}
 
@@ -42,7 +42,7 @@ public class ProductListingController {
 	@Path("/plsid/{plsid}")
 	@Produces("application/json")
 	public JSONObject getAllListedProductsByplsid(@PathParam("plsid") int plsid) {
-		LOGGER.debug("Received request for product listing for party " + plsid);
+		LOGGER.debug("Received request for product listing for plsid " + plsid);
 
 		return productListingService.getProductListingByPlsid(plsid);
 	}

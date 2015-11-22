@@ -29,7 +29,7 @@ public class UiCardController {
 	@Path("/partyid/{partyid}/pamauthid/{pamauthid}/userlocation/{userlocation}")
 	@Produces("application/json")
 		public JSONArray getAllListedProductsBypartyid(@PathParam("partyid") int partyid,@PathParam("pamauthid") String pamauthid,@PathParam("userlocation") String userLocation) {
-		LOGGER.debug("Received request for product listing for party " + partyid);
+		LOGGER.debug("get stream for party " + partyid);
 
 		return uicardService.getUicard(partyid, pamauthid, userLocation);
 	}

@@ -8,6 +8,8 @@ import javax.inject.Inject;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +21,7 @@ import com.borrowhut.ws.repository.CustomProductListingRepository;
 @Service
 @Validated
 public class UicardServiceImpl implements UicardService {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(UicardServiceImpl.class);
 	@Autowired
 	private CustomProductListingRepository customProductListingRepository;
 
@@ -44,8 +46,7 @@ public class UicardServiceImpl implements UicardService {
 
 			recrod = (Map) itr.next();
 			job = new JSONObject();
-			System.out.println("ucid id" + recrod.get("ID").toString());
-
+			LOGGER.debug("ucid id" + recrod.get("ID").toString());
 			job.put("UIC.ID", recrod.get("ID"));
 
 			job.put("UIC.NAME", recrod.get("NAME"));
@@ -53,7 +54,7 @@ public class UicardServiceImpl implements UicardService {
 			switch (recrod.get("HANDLER_CLASS").toString()) {
 
 			case "com.borrowhut.controller.inspiration":
-				System.out.println("firing inspiration handler");
+				LOGGER.debug("firing inspiration handler");
 				JSONArray fronttokenscollection = inspirartion
 						.getFronttokens(Integer.parseInt(recrod.get("ID").toString()), customProductListingRepository);
 				job.put("CardFronttokens", fronttokenscollection);

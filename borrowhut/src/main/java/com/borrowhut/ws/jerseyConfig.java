@@ -14,6 +14,7 @@ public class jerseyConfig extends ResourceConfig {
 	
 	public jerseyConfig()
 	{
+		
 		register(Home.class);
 		register(ProductListingController.class);
 		register(UiCardController.class);

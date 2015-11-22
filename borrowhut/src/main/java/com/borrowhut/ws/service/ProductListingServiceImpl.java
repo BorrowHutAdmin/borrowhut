@@ -6,6 +6,8 @@ import javax.inject.Inject;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -15,9 +17,13 @@ import com.borrowhut.ws.domain.Product;
 import com.borrowhut.ws.domain.ProductListing;
 import com.borrowhut.ws.repository.ProductListingRepository;
 
+
+
 @Service
 @Validated
 public class ProductListingServiceImpl implements ProductListingService {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProductListingServiceImpl.class);
 	private final ProductListingRepository productListingRepository;
 
 	@Inject
