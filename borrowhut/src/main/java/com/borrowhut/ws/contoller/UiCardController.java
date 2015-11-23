@@ -30,8 +30,10 @@ public class UiCardController {
 	@Produces("application/json")
 		public JSONArray getAllListedProductsBypartyid(@PathParam("partyid") int partyid,@PathParam("pamauthid") String pamauthid,@PathParam("userlocation") String userLocation) {
 		LOGGER.debug("get stream for party " + partyid);
-
-		return uicardService.getUicard(partyid, pamauthid, userLocation);
+	String[] lanlat	=userLocation.split(",");
+	
+	
+		return uicardService.getUicard(partyid,  Float.parseFloat(lanlat[0]),Float.parseFloat(lanlat[1]));
 	}
 	
 }
