@@ -6,9 +6,14 @@ import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.borrowhut.ws.domain.ListedProductFeature;
+import com.borrowhut.ws.domain.ProductListing;
 import com.borrowhut.ws.repository.CustomProductListingRepository;
+import com.borrowhut.ws.repository.ProductListingRepository;
 
 @Component
 public class Inspiration {
@@ -18,6 +23,10 @@ public class Inspiration {
 	private static String TOKEN_VALUE = "CALCULATED";
 	private static String CARD_FACE = "FRONT";
 	private static String TOKEN_NAME_CATEGORY = "CATEGORY";
+	
+	
+	@Autowired
+	private ProductListingRepository productListingRepository;
 
 	public JSONArray getFronttokens(int ucid, CustomProductListingRepository customProductListingRepository) {
 
@@ -48,10 +57,49 @@ public class Inspiration {
 		return fronttokenscollection;
 
 	}
-
 	public JSONArray getBacktokens(int ucid, CustomProductListingRepository customProductListingRepository) {
+		
+		JSONArray backtokencollection = new JSONArray();
+		JSONObject obj;
+		Map<String, Object> record;
+		int plsid = 0;
+		List listofbacktoken = customProductListingRepository.getProductListForBackToken(ucid);
+		for (Iterator itr = listofbacktoken.iterator(); itr.hasNext();) {
+			record = (Map) itr.next();
+			obj= new JSONObject();
+			for (Map.Entry<String, Object> entry : record.entrySet())
+			{
+			    System.out.println(entry.getKey() + "/" + entry.getValue());
+			    obj.put(entry.getKey(), entry.getValue());
+			    if(entry.getKey().equalsIgnoreCase("PLS_ID"))
+			    {
+			    	plsid=(int)entry.getValue();
+			    }
+			}
+			String listedProductFeature = getProductlsiting(plsid);
+			obj.put("ListedProductFeature", listedProductFeature);
+			backtokencollection.add(obj);
+		
+		}
+		
+		return backtokencollection;
 
-		return new JSONArray();
+	}
+	
+	@Transactional
+	private String getProductlsiting(int plsid) {		
+		
+		System.out.println("getting features");
+		ProductListing productList =	productListingRepository.getOne(plsid);
+		String featurelist = "";
+		for (ListedProductFeature feature : productList.getListedProductFeatures()) {
+			featurelist = featurelist.equals("")
+					? (featurelist + feature.getId().getFtrName() + "," + feature.getLpfFtrValue())
+					:  featurelist+","  + feature.getId().getFtrName() + "," + feature.getLpfFtrValue();
 
+		}
+		
+		System.out.println("returning features"+featurelist);
+		return featurelist;
 	}
 }

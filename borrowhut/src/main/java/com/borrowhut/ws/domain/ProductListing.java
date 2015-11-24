@@ -54,7 +54,16 @@ public class ProductListing implements Serializable {
 
 	@Column(name="PLS_SECOND_CIRCLE_PRICE", length=45)
 	private String plsSecondCirclePrice;
+	
+	@Column(name="PRODUCT_AVAILABLE",length=1)
+	private String productAvailable;
 
+	public String getProductAvailable() {
+		return productAvailable;
+	}
+	public void setProductAvailable(String productAvailable) {
+		this.productAvailable = productAvailable;
+	}
 	//bi-directional many-to-one association to BorrowLog
 	@OneToMany(mappedBy="productListing")
 	private List<BorrowLog> borrowLogs;
@@ -75,6 +84,9 @@ public class ProductListing implements Serializable {
 		@JoinColumn(name="PRD_ID", referencedColumnName="PRD_ID", nullable=false)
 		})
 	private Product product;
+	
+	
+	
 
 	public ProductListing() {
 	}
