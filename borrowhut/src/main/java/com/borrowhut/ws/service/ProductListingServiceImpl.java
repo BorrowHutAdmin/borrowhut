@@ -53,8 +53,8 @@ public class ProductListingServiceImpl implements ProductListingService {
 		if (prdlisting != null) {
 			for (ProductListing prdlist : prdlisting) {
 				object = new JSONObject();
-				object.put("productlisting", getProductlsiting(prdlist));
 				object.put("partyid", prdlist.getParty().getPtyId());
+				object.put("productlisting", getProductlsiting(prdlist));
 				jsonrecords.add(object);
 			}
 		}

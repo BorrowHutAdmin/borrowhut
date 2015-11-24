@@ -26,6 +26,7 @@ public JSONArray getProductListingBasedOnLocation(int ucid,float latitude,float 
 			Map<String, Object> recrod;
 			JSONObject object  = new JSONObject();
 			int plsid =0;
+			System.out.println("length of records"+productlisting.size());
 			
 									if(productlisting!=null){
 											for(Iterator itr = productlisting.iterator(); itr.hasNext();){
@@ -35,9 +36,9 @@ public JSONArray getProductListingBasedOnLocation(int ucid,float latitude,float 
 												plsid =	Integer.parseInt(recrod.get("PLS_ID").toString())  ;
 												object.put("PLS_ID",plsid);
 												object.put("PTY_ID",Integer.parseInt(recrod.get("PTY_ID").toString()));
-												object.put("PTY_PHOTO",recrod.get("PTY_PHOTO").toString());
+												object.put("PTY_PHOTO",recrod.get("PTY_PHOTO")!=null?recrod.get("PTY_PHOTO").toString():null);
 												object.put("PRD_NAME",recrod.get("PRD_NAME").toString());
-												object.put("PRD_PHOTO_LINK",recrod.get("PRD_PHOTO_LINK").toString());
+												object.put("PRD_PHOTO_LINK",recrod.get("PRD_PHOTO_LINK")!=null?recrod.get("PRD_PHOTO_LINK").toString():null);
 										
 												object.put("LISTED_PRODUCT_FEATURES", getProductlsiting(plsid,productListingRepository));
 												productising.add(object);
@@ -53,7 +54,7 @@ public JSONArray getProductListingBasedOnLocation(int ucid,float latitude,float 
 private String getProductlsiting(int plsid,ProductListingRepository productListingRepository) {
 	
 	
-	
+	System.out.println("getting features");
 	ProductListing productList =	productListingRepository.getOne(plsid);
 	String featurelist = "";
 	for (ListedProductFeature feature : productList.getListedProductFeatures()) {
@@ -62,6 +63,8 @@ private String getProductlsiting(int plsid,ProductListingRepository productListi
 				:  featurelist+","  + feature.getId().getFtrName() + "," + feature.getLpfFtrValue();
 
 	}
+	
+	System.out.println("returning features"+featurelist);
 	return featurelist;
 }
 }
