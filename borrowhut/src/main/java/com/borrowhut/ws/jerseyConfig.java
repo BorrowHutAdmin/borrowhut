@@ -14,7 +14,7 @@ public class jerseyConfig extends ResourceConfig {
 	
 	public jerseyConfig()
 	{
-		
+		packages("com.borrowhut.ws.exception");
 		register(Home.class);
 		register(ProductListingController.class);
 		register(UiCardController.class);

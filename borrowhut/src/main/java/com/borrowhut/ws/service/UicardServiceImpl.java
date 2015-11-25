@@ -34,7 +34,7 @@ public class UicardServiceImpl implements UicardService {
 	}
 
 	@Transactional
-	public JSONArray getUicard(int paryId, String pamAuthId, String userLocation) {
+	public JSONArray getUicard(int paryId, float latitude,float longitude) {
 
 		JSONArray jrray = new JSONArray();
 		JSONObject job;
@@ -56,7 +56,7 @@ public class UicardServiceImpl implements UicardService {
 			case "com.borrowhut.controller.inspiration":
 				LOGGER.debug("firing inspiration handler");
 				JSONArray fronttokenscollection = inspirartion
-						.getFronttokens(Integer.parseInt(recrod.get("ID").toString()), customProductListingRepository);
+						.getFronttokens(Integer.parseInt(recrod.get("ID").toString()), customProductListingRepository,latitude,longitude);
 				job.put("CardFronttokens", fronttokenscollection);
 				JSONArray backtokenscollection = inspirartion
 						.getBacktokens(Integer.parseInt(recrod.get("ID").toString()), customProductListingRepository);

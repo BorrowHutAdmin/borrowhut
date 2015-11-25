@@ -28,13 +28,13 @@ public class Inspiration {
 	@Autowired
 	private ProductListingRepository productListingRepository;
 
-	public JSONArray getFronttokens(int ucid, CustomProductListingRepository customProductListingRepository) {
+	public JSONArray getFronttokens(int ucid, CustomProductListingRepository customProductListingRepository,float latitude,float longitude) {
 
 		JSONArray fronttokenscollection = new JSONArray();
 		JSONObject object;
 		Map<String, Object> recrod;
 		List listofcategorywithcont = customProductListingRepository
-				.getProductListeByCategoryAndCountBasedonTokenName(ucid, TOKEN_NAME_CATEGORY);
+				.getProductListeByCategoryAndCountBasedonTokenName(ucid, TOKEN_NAME_CATEGORY,latitude,longitude);
 		int totalitemscount = 0;
 		for (Iterator itr = listofcategorywithcont.iterator(); itr.hasNext();) {
 			object = new JSONObject();

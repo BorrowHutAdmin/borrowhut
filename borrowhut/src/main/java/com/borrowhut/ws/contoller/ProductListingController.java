@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.borrowhut.ws.exception.ListedProductNotFoundException;
+import com.borrowhut.ws.exception.PartyNotFoundException;
 import com.borrowhut.ws.service.ProductListingService;
 
 
@@ -32,7 +34,7 @@ public class ProductListingController {
 	@GET
 	@Path("/partyid/{partyid}")
 	@Produces("application/json")
-		public JSONArray getAllListedProductsBypartyid(@PathParam("partyid") int partyid) {
+		public JSONArray getAllListedProductsBypartyid(@PathParam("partyid") int partyid) throws PartyNotFoundException {
 		LOGGER.debug("Received request for product listing for party " + partyid);
 
 		return productListingService.getProductListingByPartyid(partyid);
@@ -41,9 +43,13 @@ public class ProductListingController {
 	@GET
 	@Path("/plsid/{plsid}")
 	@Produces("application/json")
-	public JSONObject getAllListedProductsByplsid(@PathParam("plsid") int plsid) {
+	public JSONObject getAllListedProductsByplsid(@PathParam("plsid") int plsid) throws ListedProductNotFoundException {
 		LOGGER.debug("Received request for product listing for plsid " + plsid);
-
+		/*if(plsid==0)
+		{
+			throw new NullPointerException("LsitedProduct id is null");
+		}	*/			
 		return productListingService.getProductListingByPlsid(plsid);
+		
 	}
 }
