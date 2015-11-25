@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 
 import com.borrowhut.ws.domain.ListedProductFeature;
 import com.borrowhut.ws.domain.ProductListing;
+import com.borrowhut.ws.exception.ProductNotFoundException;
 import com.borrowhut.ws.repository.CustomProductListingRepository;
 import com.borrowhut.ws.repository.ProductListingRepository;
 
@@ -30,29 +31,47 @@ public class ProductServiceImpl implements ProductService {
 	@Transactional
 	@Override
 	public JSONArray getSearchProduct(String searchCriteria,String searchValue, float latitude,
-			float longitude, float distance) {
+			float longitude, float distance) throws ProductNotFoundException {
 		
 		JSONArray jsonArray = new JSONArray();
 		List products;
 	switch(searchCriteria) {
 		case "PRD.PRD_NAME":
 			 products =	customProductListingRepository.getProducts(latitude, longitude, distance, "PRD.PRD_NAME", "'"+"%"+searchValue+"%"+"'");
-		jsonArray =	buildResult(products);
+			 
+			 if(products!=null && products.size()>0)
+			 
+				 	jsonArray =	buildResult(products);
+			 else 
+				 throw new ProductNotFoundException("Product with "+searchCriteria+" "+searchValue+" not found ");
+			 
 			break;
 		case "PL.PRD_ID":
 			
 		 products =	customProductListingRepository.getProducts(latitude, longitude, distance, "PL.PRD_ID", searchValue);
-		 jsonArray =	buildResult(products);
+		 
+		 if(products!=null && products.size()>0)
+		 
+			 	jsonArray =	buildResult(products);
+		 else 
+			 throw new ProductNotFoundException("Product with "+searchCriteria+" "+searchValue+" not found ");
+		
 			break;
 		case "PRD.CAT_NAME":
 			 products =	customProductListingRepository.getProducts(latitude, longitude, distance, "PRD.CAT_NAME", "'"+searchValue+"'");
-			 jsonArray =	buildResult(products);
+			 
+			 if(products!=null && products.size()>0)
+			 
+				 	jsonArray =	buildResult(products);
+			 else 
+				 throw new ProductNotFoundException("Product with "+searchCriteria+" "+searchValue+" not found ");
+		
 			
 			break;
 		default:
 			break;
 	}
-		
+	
 				return jsonArray;
 	}
 

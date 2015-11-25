@@ -13,8 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import com.borrowhut.ws.domain.ListedProductFeature;
+import com.borrowhut.ws.domain.Party;
 import com.borrowhut.ws.domain.Product;
 import com.borrowhut.ws.domain.ProductListing;
+import com.borrowhut.ws.exception.ListedProductNotFoundException;
+import com.borrowhut.ws.exception.PartyNotFoundException;
 import com.borrowhut.ws.repository.ProductListingRepository;
 
 
@@ -33,7 +36,7 @@ public class ProductListingServiceImpl implements ProductListingService {
 
 	@Override
 	@Transactional
-	public JSONObject getProductListingByPlsid(int plsid) {
+	public JSONObject getProductListingByPlsid(int plsid) throws ListedProductNotFoundException {
 		ProductListing prod = productListingRepository.findOne(plsid);
 		JSONObject object = new JSONObject();
 		if(prod!=null){
@@ -41,22 +44,31 @@ public class ProductListingServiceImpl implements ProductListingService {
 		object.put("partyid", prod.getParty().getPtyId());
 		object.put("productlisting", getProductlsiting(prod));
 		}
+		else
+		{
+			throw new ListedProductNotFoundException("Listed Product Id Not Found");
+		}
 		return object;
 	}
 
 	@Override
 	@Transactional
-	public JSONArray getProductListingByPartyid(int partyid) {
+
+	public JSONArray getProductListingByPartyid(int partyid) throws PartyNotFoundException {
 		List<ProductListing> prdlisting = productListingRepository.findByptyId(partyid);
 		JSONArray jsonrecords = new JSONArray();
 		JSONObject object;
-		if (prdlisting != null) {
+		if (prdlisting != null && prdlisting.size()>0) {
 			for (ProductListing prdlist : prdlisting) {
 				object = new JSONObject();
-				object.put("partyid", prdlist.getParty().getPtyId());
 				object.put("productlisting", getProductlsiting(prdlist));
+				object.put("partyid", prdlist.getParty().getPtyId());
 				jsonrecords.add(object);
 			}
+		}
+		else
+		{
+			throw new PartyNotFoundException("No Listed Product For This Party");
 		}
 		return jsonrecords;
 	}
@@ -64,8 +76,9 @@ public class ProductListingServiceImpl implements ProductListingService {
 	private String getProductlsiting(ProductListing prdlist) {
 		String productlisting = "";
 		Product pdt = prdlist.getProduct();
+		Party pty = prdlist.getParty();
 		String featurelist = "";
-		productlisting = prdlist.getPlsId() + "," + pdt.getCategory().getCatName() + "," + pdt.getPrdName() + ","
+		productlisting = prdlist.getPlsId() + "," + pty.getPtyName() + "," + pty.getPtyPhoto() + "," + pdt.getCategory().getCatName() + "," + pdt.getPrdName() + ","
 				+ pdt.getPrdDescription() + "," + pdt.getPrdPhotoLink();
 		for (ListedProductFeature feature : prdlist.getListedProductFeatures()) {
 			featurelist = featurelist.equals("")
