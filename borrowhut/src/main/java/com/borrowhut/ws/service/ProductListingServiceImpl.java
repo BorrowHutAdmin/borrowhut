@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import com.borrowhut.ws.domain.ListedProductFeature;
+import com.borrowhut.ws.domain.Party;
 import com.borrowhut.ws.domain.Product;
 import com.borrowhut.ws.domain.ProductListing;
 import com.borrowhut.ws.exception.ListedProductNotFoundException;
@@ -74,8 +75,9 @@ public class ProductListingServiceImpl implements ProductListingService {
 	private String getProductlsiting(ProductListing prdlist) {
 		String productlisting = "";
 		Product pdt = prdlist.getProduct();
+		Party pty = prdlist.getParty();
 		String featurelist = "";
-		productlisting = prdlist.getPlsId() + "," + pdt.getCategory().getCatName() + "," + pdt.getPrdName() + ","
+		productlisting = prdlist.getPlsId() + "," + pty.getPtyName() + "," + pty.getPtyPhoto() + "," + pdt.getCategory().getCatName() + "," + pdt.getPrdName() + ","
 				+ pdt.getPrdDescription() + "," + pdt.getPrdPhotoLink();
 		for (ListedProductFeature feature : prdlist.getListedProductFeatures()) {
 			featurelist = featurelist.equals("")
