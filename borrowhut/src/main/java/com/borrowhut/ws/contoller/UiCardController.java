@@ -11,10 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.borrowhut.ws.exception.UiCardNotFoundException;
 import com.borrowhut.ws.service.UicardService;
 
 @Component
-@Path("/uicard")
+@Path("/getStream")
 public class UiCardController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UiCardController.class);
 	private final UicardService uicardService;
@@ -26,9 +27,9 @@ public class UiCardController {
 	}
 	
 	@GET
-	@Path("/partyid/{partyid}/pamauthid/{pamauthid}/userlocation/{userlocation}")
+	@Path("/partyid/{partyid}/userlocation/{userlocation}")
 	@Produces("application/json")
-		public JSONArray getAllListedProductsBypartyid(@PathParam("partyid") int partyid,@PathParam("pamauthid") String pamauthid,@PathParam("userlocation") String userLocation) {
+		public JSONArray getAllListedProductsBypartyid(@PathParam("partyid") int partyid,@PathParam("pamauthid") String pamauthid,@PathParam("userlocation") String userLocation) throws NumberFormatException, UiCardNotFoundException {
 		LOGGER.debug("get stream for party " + partyid);
 	String[] lanlat	= userLocation.split(",");
 	LOGGER.debug("latitude"+lanlat[0].toString());

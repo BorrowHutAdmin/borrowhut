@@ -6,11 +6,13 @@ import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.borrowhut.ws.domain.ListedProductFeature;
 import com.borrowhut.ws.domain.ProductListing;
+import com.borrowhut.ws.repository.CustomDispalyedUiCardRepository;
 import com.borrowhut.ws.repository.CustomProductListingRepository;
 import com.borrowhut.ws.repository.ProductListingRepository;
 
@@ -24,14 +26,19 @@ public class Inspiration {
 	private static String TOKEN_VALUE = "CALCULATED";
 	private static String CARD_FACE = "FRONT";
 	private static String TOKEN_NAME_CATEGORY = "CATEGORY";
+	
+	@Autowired
+	private CustomDispalyedUiCardRepository customDispalyedUiCardRepository;
+
 
 	public JSONArray getFronttokens(int ucid, CustomProductListingRepository customProductListingRepository,float latitude,float longitude) {
 
 		JSONArray fronttokenscollection = new JSONArray();
 		JSONObject object;
 		Map<String, Object> recrod;
+		float distance=customDispalyedUiCardRepository.gettDistanceByUicId(ucid);		
 		List listofcategorywithcont = customProductListingRepository
-				.getProductListeByCategoryAndCountBasedonTokenName(ucid, TOKEN_NAME_CATEGORY,latitude,longitude);
+				.getProductListeByCategoryAndCountBasedonTokenName(ucid, TOKEN_NAME_CATEGORY,latitude,longitude,distance);
 		int totalitemscount = 0;
 		for (Iterator itr = listofcategorywithcont.iterator(); itr.hasNext();) {
 			object = new JSONObject();
@@ -60,8 +67,10 @@ public JSONArray getBacktokens(int ucid, CustomProductListingRepository customPr
 		JSONArray backtokencollection = new JSONArray();
 		JSONObject obj;
 		Map<String, Object> record;
+		
+		float distance=customDispalyedUiCardRepository.gettDistanceByUicId(ucid);	
 		int plsid = 0;
-		List listofbacktoken = customProductListingRepository.getProductListForBackToken(ucid,latitude,longitude);
+		List listofbacktoken = customProductListingRepository.getProductListForBackToken(ucid,latitude,longitude,distance);
 		for (Iterator itr = listofbacktoken.iterator(); itr.hasNext();) {
 			record = (Map) itr.next();
 			obj= new JSONObject();

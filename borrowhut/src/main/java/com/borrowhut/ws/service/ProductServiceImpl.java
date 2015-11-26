@@ -30,47 +30,20 @@ public class ProductServiceImpl implements ProductService {
 	private ProductListingRepository productListingRepository;
 	@Transactional
 	@Override
-	public JSONArray getSearchProduct(String searchCriteria,String searchValue, float latitude,
+	public JSONArray getSearchProduct(String productName,int prdId,String catName, float latitude,
 			float longitude, float distance) throws ProductNotFoundException {
 		
 		JSONArray jsonArray = new JSONArray();
-		List products;
-	switch(searchCriteria) {
-		case "PRD.PRD_NAME":
-			 products =	customProductListingRepository.getProducts(latitude, longitude, distance, "PRD.PRD_NAME", "'"+"%"+searchValue+"%"+"'");
+		
+		 List products =	customProductListingRepository.getProducts(productName,prdId,catName, latitude, longitude, distance);
 			 
 			 if(products!=null && products.size()>0)
 			 
 				 	jsonArray =	buildResult(products);
 			 else 
-				 throw new ProductNotFoundException("Product with "+searchCriteria+" "+searchValue+" not found ");
-			 
-			break;
-		case "PL.PRD_ID":
+				 throw new ProductNotFoundException("Product(s) with name not found ");			 
 			
-		 products =	customProductListingRepository.getProducts(latitude, longitude, distance, "PL.PRD_ID", searchValue);
-		 
-		 if(products!=null && products.size()>0)
-		 
-			 	jsonArray =	buildResult(products);
-		 else 
-			 throw new ProductNotFoundException("Product with "+searchCriteria+" "+searchValue+" not found ");
 		
-			break;
-		case "PRD.CAT_NAME":
-			 products =	customProductListingRepository.getProducts(latitude, longitude, distance, "PRD.CAT_NAME", "'"+searchValue+"'");
-			 
-			 if(products!=null && products.size()>0)
-			 
-				 	jsonArray =	buildResult(products);
-			 else 
-				 throw new ProductNotFoundException("Product with "+searchCriteria+" "+searchValue+" not found ");
-		
-			
-			break;
-		default:
-			break;
-	}
 	
 				return jsonArray;
 	}
