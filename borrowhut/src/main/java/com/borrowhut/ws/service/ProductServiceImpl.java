@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
 			 
 				 	jsonArray =	buildResult(products);
 			 else 
-				 throw new ProductNotFoundException("Product with "+searchCriteria+" "+searchValue+" not found ");			 
+				 throw new ProductNotFoundException("Product not found ");			 
 			
 		
 	

@@ -37,9 +37,10 @@ public class ProductController {
 		System.out.println("latitude"+Float.parseFloat(lanlong[0].toString()));
 		System.out.println("longitude"+lanlong[1].toString());
 		System.out.println("distance in miles"+distanceinmiles);
+		int prdId=0;
+		String catName="";		
 		
-		
-		return productService.getSearchProduct( productName, prdId, Float.parseFloat(lanlong[0].toString()), Float.parseFloat(lanlong[1].toString()), distanceinmiles);
+		return productService.getSearchProduct( productName, prdId,catName,Float.parseFloat(lanlong[0].toString()), Float.parseFloat(lanlong[1].toString()), distanceinmiles);
 	}
 	
 	/*@ExceptionHandler({IllegalArgumentException.class,NullPointerException.class})

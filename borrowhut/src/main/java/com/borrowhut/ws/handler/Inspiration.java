@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.borrowhut.ws.domain.ListedProductFeature;
 import com.borrowhut.ws.domain.ProductListing;
+import com.borrowhut.ws.repository.CustomDispalyedUiCardRepository;
 import com.borrowhut.ws.repository.CustomProductListingRepository;
 import com.borrowhut.ws.repository.ProductListingRepository;
 
@@ -27,14 +28,18 @@ public class Inspiration {
 	
 	@Autowired
 	private ProductListingRepository productListingRepository;
+	
+	@Autowired
+	private CustomDispalyedUiCardRepository customDispalyedUiCardRepository;
 
 	public JSONArray getFronttokens(int ucid, CustomProductListingRepository customProductListingRepository,float latitude,float longitude) {
 
 		JSONArray fronttokenscollection = new JSONArray();
 		JSONObject object;
-		Map<String, Object> recrod;
+		Map<String, Object> recrod;		
+		int distance=customDispalyedUiCardRepository.gettDistanceByUicId(ucid);		
 		List listofcategorywithcont = customProductListingRepository
-				.getProductListeByCategoryAndCountBasedonTokenName(ucid, TOKEN_NAME_CATEGORY,latitude,longitude);
+				.getProductListeByCategoryAndCountBasedonTokenName(ucid, TOKEN_NAME_CATEGORY,latitude,longitude,distance);
 		int totalitemscount = 0;
 		for (Iterator itr = listofcategorywithcont.iterator(); itr.hasNext();) {
 			object = new JSONObject();
@@ -63,7 +68,8 @@ public JSONArray getBacktokens(int ucid, CustomProductListingRepository customPr
 		JSONObject obj;
 		Map<String, Object> record;
 		int plsid = 0;
-		List listofbacktoken = customProductListingRepository.getProductListForBackToken(ucid,latitude,longitude);
+		int distance=customDispalyedUiCardRepository.gettDistanceByUicId(ucid);	
+		List listofbacktoken = customProductListingRepository.getProductListForBackToken(ucid,latitude,longitude,distance);
 		for (Iterator itr = listofbacktoken.iterator(); itr.hasNext();) {
 			record = (Map) itr.next();
 			obj= new JSONObject();
@@ -89,7 +95,7 @@ public JSONArray getBacktokens(int ucid, CustomProductListingRepository customPr
 	}
 	
 	@Transactional
-	private String getProductlsiting(int plsid) {		
+	private String getProductlsiting(int plsid,ProductListingRepository productListingRepository) {		
 		
 		System.out.println("getting features");
 		ProductListing productList =	productListingRepository.getOne(plsid);
