@@ -20,7 +20,7 @@ public class DisplayedUiCardsController {
 	}
 	
 	public int getDistanceByUicId(int uicid)
-	{		
+	{		   
 		return displayedUiCardService.getDistanceByUicId(uicid);	
 		
 	}
