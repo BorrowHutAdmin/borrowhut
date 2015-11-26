@@ -45,11 +45,7 @@ public class ProductListingController {
 	@Produces("application/json")
 	public JSONObject getAllListedProductsByplsid(@PathParam("plsid") int plsid) throws ListedProductNotFoundException {
 		LOGGER.debug("Received request for product listing for plsid " + plsid);
-		/*if(plsid==0)
-		{
-			throw new NullPointerException("LsitedProduct id is null");
-		}	*/			
+
 		return productListingService.getProductListingByPlsid(plsid);
-		
 	}
 }

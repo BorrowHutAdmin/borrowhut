@@ -2,8 +2,7 @@ package com.borrowhut.ws.exception;
 
 import java.io.Serializable;
 
-public class PartyNotFoundException extends Exception implements Serializable {
-	
+public class PartyNotFoundException  extends Exception implements Serializable{
 	public PartyNotFoundException()
 	{
 		super();
@@ -16,5 +15,4 @@ public class PartyNotFoundException extends Exception implements Serializable {
 	{
 		super(msg,exp);
 	}
-
 }

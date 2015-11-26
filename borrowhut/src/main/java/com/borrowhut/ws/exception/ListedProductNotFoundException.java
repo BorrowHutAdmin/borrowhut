@@ -2,8 +2,7 @@ package com.borrowhut.ws.exception;
 
 import java.io.Serializable;
 
-public class ListedProductNotFoundException extends Exception implements Serializable{
-
+public class ListedProductNotFoundException  extends Exception implements Serializable{
 	public ListedProductNotFoundException()
 	{
 		super();
@@ -18,5 +17,4 @@ public class ListedProductNotFoundException extends Exception implements Seriali
 	{
 		super(msg,exp);
 	}
-	
 }

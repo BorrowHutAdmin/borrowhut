@@ -12,8 +12,8 @@ import com.borrowhut.ws.exception.PartyNotFoundException;
 
 public interface ProductListingService {
 
-public JSONObject getProductListingByPlsid(int plsid) throws ListedProductNotFoundException;
+	public JSONObject getProductListingByPlsid(int plsid) throws  ListedProductNotFoundException;
 
-public JSONArray getProductListingByPartyid(int partyid) throws PartyNotFoundException;
+	public JSONArray getProductListingByPartyid(int partyid) throws PartyNotFoundException;
 
 }

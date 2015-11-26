@@ -30,11 +30,28 @@ public class DisplayedUiCard implements Serializable {
 	
 	@Column(name="TOKEN_VALUE", length=45)
 	private String tokenValue;
+	
+	@Column(name="CARD_FACE",length=10)
+	private String cardFace;
+
+	public int getId() {
+		return id;
+	}
+
+	public String getCardFace() {
+		return cardFace;
+	}
+
+	public void setCardFace(String cardFace) {
+		this.cardFace = cardFace;
+	}
 
 	//bi-directional many-to-one association to UiCard
 	@ManyToOne
 	@JoinColumn(name="UIC_ID", nullable=false, insertable=false, updatable=false)
 	private UiCard uiCard;
+	
+	
 
 	public DisplayedUiCard() {
 	}

@@ -29,10 +29,12 @@ public class UiCardController {
 	@Path("/partyid/{partyid}/pamauthid/{pamauthid}/userlocation/{userlocation}")
 	@Produces("application/json")
 		public JSONArray getAllListedProductsBypartyid(@PathParam("partyid") int partyid,@PathParam("pamauthid") String pamauthid,@PathParam("userlocation") String userLocation) {
-		String[] latlan=userLocation.split(",");
 		LOGGER.debug("get stream for party " + partyid);
-
-		return uicardService.getUicard(partyid,Float.parseFloat(latlan[0].toString()),Float.parseFloat(latlan[1].toString()));
+	String[] lanlat	= userLocation.split(",");
+	LOGGER.debug("latitude"+lanlat[0].toString());
+	LOGGER.debug("latitude"+lanlat[1].toString());
+	
+		return uicardService.getUicard(partyid,  Float.parseFloat(lanlat[0].toString()),Float.parseFloat(lanlat[1].toString()));
 	}
 	
 }

@@ -54,8 +54,7 @@ public class ProductListing implements Serializable {
 
 	@Column(name="PLS_SECOND_CIRCLE_PRICE", length=45)
 	private String plsSecondCirclePrice;
-	
-	@Column(name="PRODUCT_AVAILABLE",length=1)
+	@Column(name="PRODUCT_AVAILABLE", length=1)
 	private String productAvailable;
 
 	public String getProductAvailable() {
@@ -84,9 +83,6 @@ public class ProductListing implements Serializable {
 		@JoinColumn(name="PRD_ID", referencedColumnName="PRD_ID", nullable=false)
 		})
 	private Product product;
-	
-	
-	
 
 	public ProductListing() {
 	}

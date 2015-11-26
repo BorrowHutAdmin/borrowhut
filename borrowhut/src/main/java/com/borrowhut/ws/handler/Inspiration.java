@@ -57,13 +57,13 @@ public class Inspiration {
 		return fronttokenscollection;
 
 	}
-	public JSONArray getBacktokens(int ucid, CustomProductListingRepository customProductListingRepository) {
+public JSONArray getBacktokens(int ucid, CustomProductListingRepository customProductListingRepository,ProductListingRepository productListingRepository,float latitude,float longitude) {
 		
 		JSONArray backtokencollection = new JSONArray();
 		JSONObject obj;
 		Map<String, Object> record;
 		int plsid = 0;
-		List listofbacktoken = customProductListingRepository.getProductListForBackToken(ucid);
+		List listofbacktoken = customProductListingRepository.getProductListForBackToken(ucid,latitude,longitude);
 		for (Iterator itr = listofbacktoken.iterator(); itr.hasNext();) {
 			record = (Map) itr.next();
 			obj= new JSONObject();
@@ -76,7 +76,7 @@ public class Inspiration {
 			    	plsid=(int)entry.getValue();
 			    }
 			}
-			String listedProductFeature = getProductlsiting(plsid);
+			String listedProductFeature = getProductlsiting(plsid,productListingRepository);
 			obj.put("ListedProductFeature", listedProductFeature);
 			backtokencollection.add(obj);
 			

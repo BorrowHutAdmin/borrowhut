@@ -1,6 +1,5 @@
 package com.borrowhut.ws.repository;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,22 +13,11 @@ public class CustomProductListingRepository {
 
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
-	
 	@Autowired
 	protected SqlConfigPropertyFetch sqlConfigPropertyfetch;
-
-	/*public List getStream() {
-
 	
-		List listofuicadrs = jdbcTemplate.queryForList("SELECT X.UCID,X.NAME,X.TOKEN_NAME FROM ("
-				+ "SELECT UC.ID AS UCID,UC.NAME,DIC.ID,DIC.UIC_ID,DIC.TOKEN_NAME,DIC.TOKEN_VALUE FROM DISPLAYED_UI_CARDS AS DIC "
-				+ "LEFT JOIN UI_CARDS AS UC ON UC.ID=DIC.UIC_ID AND UC.USER_SPECIFIC='N' ) AS X WHERE X.TOKEN_VALUE='CALCULATED'");
-
-		return listofuicadrs;
-	}*/
-
 	public List getProductListeByCategoryAndCountBasedonTokenName(int ucid, String tokenName,float latitude,float longitude) {
-	
+		
 		List listofcatwithcount = jdbcTemplate
 				.queryForList(" SELECT COUNT(*) AS CAT_COUNT,CAT_NAME FROM PRODUCT_LISTING AS PL LEFT JOIN  PARTY AS P ON PL.PTY_ID = P.PTY_ID "
 						+ "WHERE PL.CAT_NAME IN ("
@@ -55,15 +43,71 @@ public class CustomProductListingRepository {
 
 		return (listofrecord != null && listofrecord.size() > 0) ? true : false;
 	}
+	/*SELECT PL.PLS_ID,PL.PTY_ID,P.PTY_PHOTO,PRD.PRD_NAME,PRD.PRD_PHOTO_LINK,( 3959 * ACOS ( COS ( RADIANS(48.854437) ) * COS( RADIANS( P.PTY_LATITUDE ) ) * COS( RADIANS( P.PTY_LONGITUDE ) - RADIANS(2.313564) ) + SIN ( RADIANS(48.854437) ) * SIN( RADIANS( P.PTY_LATITUDE ) ) ) ) AS DISTANCE FROM PRODUCT_LISTING AS PL
+	LEFT JOIN PARTY AS P ON PL.PTY_ID=P.PTY_ID 
+	LEFT JOIN PRODUCT AS PRD ON PL.PRD_ID=PRD.PRD_ID 
+	HAVING (DISTANCE < (SELECT TOKEN_VALUE FROM DISPLAYED_UI_CARDS WHERE TOKEN_NAME='DISTANCE' AND UIC_ID=1))  ORDER BY PLS_ID DESC LIMIT 3*/
 	
-	public List getProductListForBackToken(int ucid){		
+	public List getProductListingBasedOnLocation(int ucid,float latitude,float longitude,String tokenName,int numberofrecords) {
+																														/*3959 * acos( cos( radians(lat1) ) 
+																															      * cos( radians(lat2) ) 
+																															      * cos( radians(lon2) - radians(lon1)) + sin(radians(lat1))
+																															      * sin( radians(lat2) )*/
+		
+		List listofrecord = jdbcTemplate.queryForList("SELECT PL.PLS_ID,PL.PTY_ID,P.PTY_PHOTO,PRD.PRD_NAME,PRD.PRD_PHOTO_LINK,( 3959 * ACOS ( COS ( RADIANS("+latitude+") ) * COS( RADIANS( P.PTY_LATITUDE ) ) * COS( RADIANS( P.PTY_LONGITUDE ) - RADIANS("+longitude+") ) + SIN ( RADIANS("+latitude+") ) * SIN( RADIANS( P.PTY_LATITUDE ) ) ) ) AS DISTANCE FROM PRODUCT_LISTING AS PL "
+	+"	LEFT JOIN PARTY AS P ON PL.PTY_ID=P.PTY_ID "
+	+"	LEFT JOIN PRODUCT AS PRD ON PL.PRD_ID=PRD.PRD_ID WHERE IFNULL(PL.PRODUCT_AVAILABLE,'Y') ='Y'"
+	+"	HAVING (DISTANCE < (SELECT TOKEN_VALUE FROM DISPLAYED_UI_CARDS WHERE TOKEN_NAME='"+tokenName+"' AND UIC_ID="+ucid+"))  ORDER BY PLS_ID DESC LIMIT "+numberofrecords+" ;  ");
+				
+		
+		
+		
+		return listofrecord;
+	}
+	
+	
+	public List getProducts(String productName,int prdId,String catName, float latitude,
+			float longitude, float distance){
+	
+		String filterCon="";
+		if(!productName.equalsIgnoreCase(null))
+		{
+			filterCon += " AND PRD.PRD_NAME LIKE '%" + productName + "%'";
+		}
+		if(prdId==0)
+		{
+			filterCon += " AND PRD.PRD_ID =" + prdId ;
+		}
+		if(!catName.equalsIgnoreCase(null))
+		{
+			filterCon += " AND PRD.CAT_NAME ='" + catName + "'" ;
+		}
+		if(distance==0)
+		{
+			filterCon += " HAVING (DISTANCE < "+distance+")"; 
+		}
+	
+		
+		List listofrecord = jdbcTemplate.queryForList("SELECT PL.PLS_ID,PL.PTY_ID,P.PTY_PHOTO,PRD.CAT_NAME,PRD.PRD_DESCRIPTION,PRD.PRD_NAME,PRD.PRD_PHOTO_LINK,( 3959 * ACOS ( COS ( RADIANS("+latitude+") ) * COS( RADIANS( P.PTY_LATITUDE ) ) * COS( RADIANS( P.PTY_LONGITUDE ) - RADIANS("+longitude+") ) + SIN ( RADIANS("+latitude+") ) * SIN( RADIANS( P.PTY_LATITUDE ) ) ) ) AS DISTANCE FROM PRODUCT_LISTING AS PL "
+				+"	LEFT JOIN PARTY AS P ON PL.PTY_ID=P.PTY_ID "
+				+"	LEFT JOIN PRODUCT AS PRD ON PL.PRD_ID=PRD.PRD_ID WHERE IFNULL(PL.PRODUCT_AVAILABLE,'Y') ='Y'" + filterCon 
+				+"  ORDER BY PLS_ID DESC ;  ");
+							
+					
+					
+					
+					return listofrecord;
+	}
+	/// vishwanath
+	public List getProductListForBackToken(int ucid,float latitude, float longitude){		
 		System.out.println("qury fetch-------------"+sqlConfigPropertyfetch.getBacktokenList());
 		String sql=sqlConfigPropertyfetch.getBacktokenList() + " AND PL.CAT_NAME IN"
 				+ "(SELECT DIC.TOKEN_VALUE FROM DISPLAYED_UI_CARDS AS DIC LEFT JOIN UI_CARDS AS UC ON UC.ID=DIC.UIC_ID AND UC.USER_SPECIFIC='N' WHERE DIC.UIC_ID="+ucid 
-				+" AND DIC.TOKEN_NAME='CATEGORY' ) ORDER BY PL.PLS_ID ";
+				+" AND DIC.TOKEN_NAME='CATEGORY' )"
+				+ " AND  (3959 * ACOS ( COS ( RADIANS("+latitude+") ) * COS( RADIANS( P.PTY_LATITUDE ) ) * COS( RADIANS( P.PTY_LONGITUDE ) - RADIANS("+longitude+") ) + SIN ( RADIANS("+latitude+") ) * SIN( RADIANS( P.PTY_LATITUDE ) ) ) ) <= (SELECT TOKEN_VALUE FROM DISPLAYED_UI_CARDS WHERE TOKEN_NAME='DISTANCE' AND UIC_ID="+ucid+")"
+				+ " ORDER BY PL.PLS_ID ";
 		List listofBackToken = jdbcTemplate
 				.queryForList(sql);
 		return listofBackToken;
 	}
-
 }

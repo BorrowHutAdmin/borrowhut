@@ -57,6 +57,27 @@ public class Party implements Serializable {
 
 	@Column(name="PTY_TRUST_SCORE", length=45)
 	private String ptyTrustScore;
+	
+	@Column(name="PTY_LATITUDE" )
+	private float ptyLatitude;
+	public float getPtyLatitude() {
+		return ptyLatitude;
+	}
+
+	public void setPtyLatitude(float ptyLatitude) {
+		this.ptyLatitude = ptyLatitude;
+	}
+
+	public float getPtyLongitude() {
+		return ptyLongitude;
+	}
+
+	public void setPtyLongitude(float ptyLongitude) {
+		this.ptyLongitude = ptyLongitude;
+	}
+
+	@Column(name="PTY_LONGITUDE" )
+	private float ptyLongitude;
 
 	//bi-directional many-to-one association to BorrowLog
 	@OneToMany(mappedBy="party")

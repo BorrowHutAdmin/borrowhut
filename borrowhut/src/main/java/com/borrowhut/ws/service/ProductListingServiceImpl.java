@@ -53,6 +53,7 @@ public class ProductListingServiceImpl implements ProductListingService {
 
 	@Override
 	@Transactional
+
 	public JSONArray getProductListingByPartyid(int partyid) throws PartyNotFoundException {
 		List<ProductListing> prdlisting = productListingRepository.findByptyId(partyid);
 		JSONArray jsonrecords = new JSONArray();
