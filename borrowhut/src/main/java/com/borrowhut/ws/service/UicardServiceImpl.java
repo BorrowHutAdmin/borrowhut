@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import com.borrowhut.ws.exception.UiCardNotFoundException;
+import com.borrowhut.ws.handler.CallToAction;
 import com.borrowhut.ws.handler.Inspiration;
 import com.borrowhut.ws.handler.Product;
 import com.borrowhut.ws.repository.CustomProductListingRepository;
@@ -25,6 +26,8 @@ import com.borrowhut.ws.repository.ProductListingRepository;
 @Validated
 public class UicardServiceImpl implements UicardService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UicardServiceImpl.class);
+	private static String FORNT_TOKENS = "CardFronttokens";
+	private static String BACK_TOKENS = "CardReversetokens";
 	@Autowired
 	private CustomProductListingRepository customProductListingRepository;
 	
@@ -33,12 +36,14 @@ public class UicardServiceImpl implements UicardService {
 
 	private final Inspiration inspirartion;
 	private final Product product;
+	private final CallToAction callToAction;
 
 	@Inject
-	public UicardServiceImpl(final Inspiration inspirartion,final Product product) {
+	public UicardServiceImpl(final Inspiration inspirartion,final Product product,final CallToAction callToAction) {
 
 		this.inspirartion = inspirartion;
 		this.product =product;
+		this.callToAction =callToAction;
 	}
 	@Override
 	@Transactional
@@ -48,33 +53,40 @@ public class UicardServiceImpl implements UicardService {
 		JSONObject job;
 		Map<String, Object> recrod;
 		// get all records with USER_SPECIFIC is equal to "N"
-		List listofuicard = customProductListingRepository.getUiCardswithUserSpecific("N");
+		List listofuicard = customProductListingRepository.getUiCards();
 		if (listofuicard!=null && listofuicard.size()>0  ) {
 				for (Iterator itr = listofuicard.iterator(); itr.hasNext();) {
 		
 					recrod = (Map) itr.next();
 					job = new JSONObject();
 					LOGGER.debug("ucid id" + recrod.get("ID").toString());
-					job.put("UIC.ID", recrod.get("ID"));
-		
-					job.put("UIC.NAME", recrod.get("NAME"));
+					
 		
 					switch (recrod.get("HANDLER_CLASS").toString()) {
 		
 					case "com.borrowhut.controller.inspiration":
 						LOGGER.debug("firing inspiration handler");
+						job.put("UIC.ID", recrod.get("ID"));
+						job.put("UIC.NAME", recrod.get("NAME"));
 						JSONArray fronttokenscollection = inspirartion
 								.getFronttokens(Integer.parseInt(recrod.get("ID").toString()), customProductListingRepository,latitude,longitude);
-						job.put("CardFronttokens", fronttokenscollection);
+						job.put(FORNT_TOKENS, fronttokenscollection);
 						JSONArray backtokenscollection = inspirartion
 								.getBacktokens(Integer.parseInt(recrod.get("ID").toString()), customProductListingRepository,productListingRepository,latitude,longitude);
-						job.put("CardReversetokens", backtokenscollection);
+						job.put(BACK_TOKENS, backtokenscollection);
 						break;
 					case "com.borrowhut.controller.product":
 						LOGGER.debug("firing product handler");
-													
+						job.put("UIC.ID", recrod.get("ID"));
+						job.put("UIC.NAME", recrod.get("NAME"));	
 						JSONArray productlisting = product.getProductListingBasedOnLocation(Integer.parseInt(recrod.get("ID").toString()), latitude, longitude, partyid, customProductListingRepository, productListingRepository);
-						job.put("PRODUCT_LISTING", productlisting);
+						job.put(FORNT_TOKENS, productlisting);
+						break;
+					case "com.borrowhut.controller.callToAction":
+							job.put("UIC.ID", recrod.get("ID"));
+							job.put("UIC.NAME", recrod.get("NAME"));
+							JSONArray frontokens =	callToAction.getFronttokens(Integer.parseInt(recrod.get("ID").toString()), recrod.get("USER_SPECIFIC").toString(),partyid);
+							job.put(FORNT_TOKENS, frontokens);
 						break;
 					default:
 		
@@ -96,3 +108,4 @@ public class UicardServiceImpl implements UicardService {
 
 	
 }
+	

@@ -44,17 +44,17 @@ public class Inspiration {
 			object = new JSONObject();
 			recrod = (Map) itr.next();
 			totalitemscount = totalitemscount + Integer.parseInt(recrod.get("CAT_COUNT").toString());
-			object.put("token_name", TOKEN_NAME_CATEGORY);
-			object.put("token_value", recrod.get("CAT_NAME"));
+			object.put("UIC_TOKEN", TOKEN_NAME_CATEGORY);
+			object.put("UIC_TOKEN_VALUE", recrod.get("CAT_NAME"));
 			fronttokenscollection.add(object);
 		}
 		Boolean isExist = customProductListingRepository.checkIsExistInDispUiCard(ucid, TOKEN_NAME_TOTAL_ITEMS,
 				TOKEN_VALUE, CARD_FACE);
 		if (isExist) {
 			object = new JSONObject();
-			object.put("token_name", TOKEN_NAME_TOTAL_ITEMS);
+			object.put("UIC_TOKEN", TOKEN_NAME_TOTAL_ITEMS);
 
-			object.put("token_value", totalitemscount);
+			object.put("UIC_TOKEN_VALUE", totalitemscount);
 			fronttokenscollection.add(object);
 		}
 

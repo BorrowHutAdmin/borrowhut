@@ -16,7 +16,8 @@ public class UiCard implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ID", unique=true, nullable=false, length=10)
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="ID")
 	private String id;
 
 	@Column(name="CARD_GROUP_SIZE")
@@ -25,22 +26,22 @@ public class UiCard implements Serializable {
 	@Column(name="DISPLAY_ORDER")
 	private int displayOrder;
 
-	@Column(name="HANDLER_CLASS", length=45)
+	@Column(name="HANDLER_CLASS")
 	private String handlerClass;
 
-	@Column(name="NAME", length=45)
+	@Column(name="NAME")
 	private String name;
 
-	@Column(name="USER_SPECIFIC", length=1)
+	@Column(name="USER_SPECIFIC")
 	private String userSpecific;
 
 	//bi-directional many-to-one association to DisplayedUiCard
 	@OneToMany(mappedBy="uiCard")
 	private List<DisplayedUiCard> displayedUiCards;
 
-	//bi-directional many-to-one association to PersonalisedCard
+	//bi-directional many-to-one association to PersonalisedUiCard
 	@OneToMany(mappedBy="uiCard")
-	private List<PersonalisedCard> personalisedCards;
+	private List<PersonalisedUiCard> personalisedUiCards;
 
 	public UiCard() {
 	}
@@ -115,26 +116,26 @@ public class UiCard implements Serializable {
 		return displayedUiCard;
 	}
 
-	public List<PersonalisedCard> getPersonalisedCards() {
-		return this.personalisedCards;
+	public List<PersonalisedUiCard> getPersonalisedUiCards() {
+		return this.personalisedUiCards;
 	}
 
-	public void setPersonalisedCards(List<PersonalisedCard> personalisedCards) {
-		this.personalisedCards = personalisedCards;
+	public void setPersonalisedUiCards(List<PersonalisedUiCard> personalisedUiCards) {
+		this.personalisedUiCards = personalisedUiCards;
 	}
 
-	public PersonalisedCard addPersonalisedCard(PersonalisedCard personalisedCard) {
-		getPersonalisedCards().add(personalisedCard);
-		personalisedCard.setUiCard(this);
+	public PersonalisedUiCard addPersonalisedUiCard(PersonalisedUiCard personalisedUiCard) {
+		getPersonalisedUiCards().add(personalisedUiCard);
+		personalisedUiCard.setUiCard(this);
 
-		return personalisedCard;
+		return personalisedUiCard;
 	}
 
-	public PersonalisedCard removePersonalisedCard(PersonalisedCard personalisedCard) {
-		getPersonalisedCards().remove(personalisedCard);
-		personalisedCard.setUiCard(null);
+	public PersonalisedUiCard removePersonalisedUiCard(PersonalisedUiCard personalisedUiCard) {
+		getPersonalisedUiCards().remove(personalisedUiCard);
+		personalisedUiCard.setUiCard(null);
 
-		return personalisedCard;
+		return personalisedUiCard;
 	}
 
 }

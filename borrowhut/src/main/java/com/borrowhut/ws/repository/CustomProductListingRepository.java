@@ -39,12 +39,18 @@ public class CustomProductListingRepository {
 
 	public List getUiCardswithUserSpecific(String userspecific) {
 
-		return jdbcTemplate.queryForList("SELECT * FROM BHD.UI_CARDS where USER_SPECIFIC ='" + userspecific + "'");
+	return jdbcTemplate.queryForList("SELECT * FROM UI_CARDS where USER_SPECIFIC ='" + userspecific + "'");
+	
 	}
 
+	public List getUiCards() {
+
+	
+			return jdbcTemplate.queryForList("SELECT * FROM UI_CARDS ");
+		}
 	public Boolean checkIsExistInDispUiCard(int ucid, String tokenName, String tokenValue, String cardFace) {
 		List listofrecord = jdbcTemplate
-				.queryForList("SELECT * FROM BHD.DISPLAYED_UI_CARDS where UIC_ID=" + ucid + " AND TOKEN_NAME ='"
+				.queryForList("SELECT * FROM DISPLAYED_UI_CARDS where UIC_ID=" + ucid + " AND TOKEN_NAME ='"
 						+ tokenName + "' AND CARD_FACE='" + cardFace + "' AND TOKEN_VALUE='" + tokenValue + "';");
 
 		return (listofrecord != null && listofrecord.size() > 0) ? true : false;
