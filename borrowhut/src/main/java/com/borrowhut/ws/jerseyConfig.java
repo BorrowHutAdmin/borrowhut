@@ -4,11 +4,12 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import org.springframework.context.annotation.Configuration;
 
-
+import com.borrowhut.ws.contoller.BorrowLogController;
 import com.borrowhut.ws.contoller.Home;
 import com.borrowhut.ws.contoller.ProductController;
 import com.borrowhut.ws.contoller.ProductListingController;
 import com.borrowhut.ws.contoller.UiCardController;
+import com.borrowhut.ws.domain.BorrowLog;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 
@@ -24,6 +25,7 @@ public class jerseyConfig extends ResourceConfig {
 		register(ProductListingController.class);
 		register(UiCardController.class);
 		register(ProductController.class);
+		register(BorrowLogController.class);
 		
 	}
 	
