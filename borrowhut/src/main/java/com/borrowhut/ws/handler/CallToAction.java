@@ -10,11 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.borrowhut.ws.repository.CustomDispalyedUiCardRepository;
+import com.borrowhut.ws.repository.CustomProductListingRepository;
 
 @Component
 public class CallToAction {
 	@Autowired
 	private CustomDispalyedUiCardRepository customDispalyedUiCardRepository;
+	
+	@Autowired
+	private CustomProductListingRepository customProductListingRepository;
 
 	public JSONArray getFronttokens(int uicId, String userSpecific, int partyId) {
 		JSONArray fronttokencollection = new JSONArray();
@@ -24,8 +28,14 @@ public class CallToAction {
 		switch (userSpecific.toLowerCase()) {
 
 		case "y":
-			if (customDispalyedUiCardRepository.checkPersonalisedcardForParty(partyId, uicId)) {
-
+			if (customDispalyedUiCardRepository.checkPersonalisedcardForParty(partyId, uicId)) 
+			{
+				
+				 if(customProductListingRepository.checkIsExistInDispUiCard(uicId, "COINS", "CALCULATED", "FRONT") && customDispalyedUiCardRepository.checkPersonalisedTokenByTokenname(uicId, partyId, "COINS").size()>0) {
+				
+					
+					 
+					 
 				List tokens = customDispalyedUiCardRepository.getTokenforCalltoAction(partyId, uicId, userSpecific);
 
 				if (tokens != null && tokens.size() > 0) {
@@ -37,6 +47,7 @@ public class CallToAction {
 						object.put("UIC_TOKEN_VALUE",recrod.get("TOKEN_VALUE"));
 						fronttokencollection.add(object);
 					}
+				}
 				}
 
 			}

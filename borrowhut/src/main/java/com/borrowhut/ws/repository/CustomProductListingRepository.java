@@ -108,19 +108,19 @@ public class CustomProductListingRepository {
 					return listofrecord;
 	}
 	/// vishwanath backtokens
-	public List getProductListForBackToken(int ucid,float latitude, float longitude,float distance){		
-		String Cond="";
-		if(distance!=0)
-		{
-			Cond += " AND  (3959 * ACOS ( COS ( RADIANS("+latitude+") ) * COS( RADIANS( P.PTY_LATITUDE ) ) * COS( RADIANS( P.PTY_LONGITUDE ) - RADIANS("+longitude+") ) + SIN ( RADIANS("+latitude+") ) * SIN( RADIANS( P.PTY_LATITUDE ) ) ) ) <="+distance;
-			
+	 public List getProductListForBackToken(int ucid,float latitude, float longitude,float distance, String dynamicColumn){		
+			String Cond="";
+			if(distance!=0)
+			{
+				Cond += " AND  (3959 * ACOS ( COS ( RADIANS("+latitude+") ) * COS( RADIANS( PARTY.PTY_LATITUDE ) ) * COS( RADIANS( PARTY.PTY_LONGITUDE ) - RADIANS("+longitude+") ) + SIN ( RADIANS("+latitude+") ) * SIN( RADIANS( PARTY.PTY_LATITUDE ) ) ) ) <="+distance;
+				
+			}
+			String sql="SELECT " + dynamicColumn +" " + sqlConfigPropertyfetch.getBacktokenList() + " AND PRODUCT_LISTING.CAT_NAME IN"
+					+ "(SELECT DIC.TOKEN_VALUE FROM DISPLAYED_UI_CARDS AS DIC LEFT JOIN UI_CARDS AS UC ON UC.ID=DIC.UIC_ID AND UC.USER_SPECIFIC='N' WHERE DIC.UIC_ID="+ucid 
+					+" AND DIC.TOKEN_NAME='CATEGORY' )"		+ Cond		
+					+ " ORDER BY PRODUCT_LISTING.PLS_ID ";
+			List listofBackToken = jdbcTemplate
+					.queryForList(sql);
+			return listofBackToken;
 		}
-		String sql=sqlConfigPropertyfetch.getBacktokenList() + " AND PL.CAT_NAME IN"
-				+ "(SELECT DIC.TOKEN_VALUE FROM DISPLAYED_UI_CARDS AS DIC LEFT JOIN UI_CARDS AS UC ON UC.ID=DIC.UIC_ID AND UC.USER_SPECIFIC='N' WHERE DIC.UIC_ID="+ucid 
-				+" AND DIC.TOKEN_NAME='CATEGORY' )"		+ Cond		
-				+ " ORDER BY PL.PLS_ID ";
-		List listofBackToken = jdbcTemplate
-				.queryForList(sql);
-		return listofBackToken;
-	}
 }

@@ -7,4 +7,5 @@ public int ILLEGAL_ARGUMENTS = 801;
 public int NULL_VALUES_IN_DB = 802;
 
 public int DB_EXPECTIONS = 803;
+public int INVALID_URL =804;
 }

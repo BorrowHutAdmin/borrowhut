@@ -3,6 +3,7 @@ package com.borrowhut.ws.exception;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -69,6 +70,11 @@ public class CustomExceptionMapper implements ExceptionMapper<Exception> {
 			errormsg = getErrorResponse(BorrwhutConstant.ILLEGAL_ARGUMENTS,"invalid parameter(s) value",exception.getClass().toString(),"borrowhut/*");
 			
 			statuscode = BorrwhutConstant.ILLEGAL_ARGUMENTS;
+		}else if(exception instanceof NotFoundException){
+			
+			errormsg = getErrorResponse(BorrwhutConstant.INVALID_URL,"there is no resource available for given url, wrong url",exception.getClass().toString(),"borrowhut/*");
+			
+			statuscode = BorrwhutConstant.INVALID_URL;
 		}else{
 			errormsg = getErrorResponse(404,exception.getMessage(),exception.getClass().toString(),"borrowhut/*");
 			statuscode=404;
