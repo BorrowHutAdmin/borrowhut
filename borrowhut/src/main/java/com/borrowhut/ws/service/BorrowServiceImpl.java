@@ -17,6 +17,7 @@ import com.borrowhut.ws.domain.BorrowLog;
 import com.borrowhut.ws.domain.BorrowStatus;
 import com.borrowhut.ws.domain.Party;
 import com.borrowhut.ws.domain.ProductListing;
+import com.borrowhut.ws.helper.BorrowhutConstant;
 import com.borrowhut.ws.repository.BorrowLogRepository;
 import com.borrowhut.ws.repository.BorrowStatusRepository;
 import com.borrowhut.ws.repository.CustomBorrowRepository;
@@ -26,17 +27,17 @@ import com.borrowhut.ws.repository.ProductListingRepository;
 @Validated
 public class BorrowServiceImpl implements BorrowService{
 	private BorrowLogRepository borrowLogRepository;
-	private ProductListingRepository productListingRepository;
+	
 	private BorrowStatusRepository borrowStatusRepository;
 @Autowired
 private CustomBorrowRepository customBorrowRepository;
 	@Inject
 	public BorrowServiceImpl(BorrowLogRepository borrowLogRepository,
 			ProductListingRepository productListingRepository, BorrowStatusRepository borrowStatusRepository) {
-		// TODO Auto-generated constructor stub
+		
 		this.borrowLogRepository = borrowLogRepository;
-		this.productListingRepository = productListingRepository;
 		this.borrowStatusRepository = borrowStatusRepository;
+		
 	}
 	@Transactional
 	@Override
@@ -79,7 +80,7 @@ private CustomBorrowRepository customBorrowRepository;
 	}
 	@Transactional
 	@Override
-	public Boolean progressBorrowTXNStatus(int bolid, String event) {
+	public Boolean progressBorrowTXNStatus(int bolid, String event) {/*
 
 		// TODO Auto-generated method stub
 	List borrowStatus=	customBorrowRepository.getBorrowStatusBybolidAndEnddate(bolid, null);
@@ -89,17 +90,17 @@ private CustomBorrowRepository customBorrowRepository;
 	Map<String,Object>	borrowstatus=(Map)borrowStatus.get(0);
 	String eventExisting= borrowstatus.get("BLE_EVENT").toString();
 	    switch(event.trim()){
-	    case "BORROWED":
-	    	if(!eventExisting.equals("RESERVE"))
-	    		throw new IllegalArgumentException("invalid event given as input");
+	    case BorrowhutConstant.BORROWED:
+	    	if(!eventExisting.equals(BorrowhutConstant.RESERVED))
+	    		throw new IllegalArgumentException("invalid event given as input, currently Status is "+eventExisting+" state ,only allowed status is "+ BorrowhutConstant.RESERVED);
 	    	break;
-	    case "CHECKEDIN":
-	    	if(!eventExisting.equals("CHECKDOUT"))
-	    		throw new IllegalArgumentException("invalid event given as input");
+	    case BorrowhutConstant.CHECKEDIN:
+	    	if(!eventExisting.equals(BorrowhutConstant.CHECKEDOUT))
+	    		throw new IllegalArgumentException("invalid event given as input, currently Status is "+eventExisting+" state ,only allowed status is "+ BorrowhutConstant.CHECKEDOUT);
 	    	break;
-	    case "CHECKEDOUT":
-	    	if(!eventExisting.equals("BORROWED"))
-	    		throw new IllegalArgumentException("invalid event given as input");
+	    case BorrowhutConstant.CHECKEDOUT:
+	    	if(!eventExisting.equals(BorrowhutConstant.BORROWED))
+	    		throw new IllegalArgumentException("invalid event given as input, currently Status is "+eventExisting+" state ,only allowed status is "+ BorrowhutConstant.BORROWED);
 	    	break;
 	    	default:
 	    		System.out.println("default");
@@ -124,6 +125,52 @@ private CustomBorrowRepository customBorrowRepository;
 		
 		return true;
 	
+	*/
+
+
+		// TODO Auto-generated method stub
+	BorrowStatus borrowStatus=	customBorrowRepository.getBorrowStatusBybolidAndEnddate(bolid, null);
+
+	String eventExisting = borrowStatus.getBorrowLifecycleEvent().getBleEvent();
+	if(borrowStatus!=null && eventExisting!=null ){
+		
+	
+	    switch(event.trim()){
+	    case BorrowhutConstant.BORROWED:
+	    	if(!eventExisting.equals(BorrowhutConstant.RESERVED))
+	    		throw new IllegalArgumentException("invalid event given as input - "+event+" , current Status is "+eventExisting );
+	    	break;
+	    case BorrowhutConstant.CHECKEDIN:
+	    	if(!eventExisting.equals(BorrowhutConstant.CHECKEDOUT))
+	    		throw new IllegalArgumentException("invalid event given as input - "+event+" , current Status is "+eventExisting );
+	    	break;
+	    case BorrowhutConstant.CHECKEDOUT:
+	    	if(!eventExisting.equals(BorrowhutConstant.BORROWED))
+	    		throw new IllegalArgumentException("invalid event given as input - "+event+" , current Status is "+eventExisting );
+	    	break;
+	    	default:
+	    		System.out.println("default");
+	    		break;
+	    }
+	    
+	  BorrowLog borrowLog =borrowStatus.getBorrowLog();
+	  borrowStatus.setBstEnddate(new Date());
+	  borrowStatusRepository.saveAndFlush(borrowStatus);
+	  
+	  BorrowStatus newBorrowrec = new BorrowStatus();
+	  newBorrowrec.setBorrowLog(borrowLog);
+	  newBorrowrec.setBstStartdate(new Date());
+	  BorrowLifecycleEvent ble = new BorrowLifecycleEvent();
+	  ble.setBleEvent(event);
+	  newBorrowrec.setBorrowLifecycleEvent(ble);
+	  borrowStatusRepository.saveAndFlush(newBorrowrec);
+	}else {
+		return false;
+	}
+		
+		return true;
+	
+		
 	}
 	
 

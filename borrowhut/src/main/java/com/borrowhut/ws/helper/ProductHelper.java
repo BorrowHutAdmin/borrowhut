@@ -24,7 +24,7 @@ public static Boolean validateEvents(String event) {
 	
 	Set<String> events = new HashSet<String>();
 	events.add("BORROWED");
-	events.add("CHEKEDIN");
+	events.add("CHECKEDIN");
 	events.add("CHECKEDOUT");
 	
 	if(events.contains(event))

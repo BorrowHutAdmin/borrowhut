@@ -12,7 +12,7 @@ import org.glassfish.jersey.server.ParamException;
 import org.glassfish.jersey.server.ParamException.QueryParamException;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import com.borrowhut.ws.helper.BorrwhutConstant;
+import com.borrowhut.ws.helper.BorrowhutConstant;
 
 @Provider
 public class CustomExceptionMapper implements ExceptionMapper<Exception> {
@@ -23,44 +23,44 @@ public class CustomExceptionMapper implements ExceptionMapper<Exception> {
 		HashMap<String, String> errormsg = new HashMap<String, String>();
 		int statuscode = 0;
 		if (exception instanceof UiCardNotFoundException) {
-			errormsg = getErrorResponse(BorrwhutConstant.RECORD_NOT_FOUND, exception.getMessage(),
+			errormsg = getErrorResponse(BorrowhutConstant.RECORD_NOT_FOUND, exception.getMessage(),
 					exception.getClass().toString(), "getStream");
-			statuscode = BorrwhutConstant.RECORD_NOT_FOUND;
+			statuscode = BorrowhutConstant.RECORD_NOT_FOUND;
 		} else if (exception instanceof ProductNotFoundException) {
-			errormsg = getErrorResponse(BorrwhutConstant.RECORD_NOT_FOUND, exception.getMessage(),
+			errormsg = getErrorResponse(BorrowhutConstant.RECORD_NOT_FOUND, exception.getMessage(),
 					exception.getClass().toString(), "searchProdduct");
-			statuscode = BorrwhutConstant.RECORD_NOT_FOUND;
+			statuscode = BorrowhutConstant.RECORD_NOT_FOUND;
 		} else if (exception instanceof ListedProductNotFoundException || exception instanceof PartyNotFoundException) {
-			errormsg = getErrorResponse(BorrwhutConstant.RECORD_NOT_FOUND, exception.getMessage(),
+			errormsg = getErrorResponse(BorrowhutConstant.RECORD_NOT_FOUND, exception.getMessage(),
 					exception.getClass().toString(), "getListedProduct");
-			statuscode = BorrwhutConstant.RECORD_NOT_FOUND;
+			statuscode = BorrowhutConstant.RECORD_NOT_FOUND;
 		} else if (exception instanceof NotFoundException) {
 
-			errormsg = getErrorResponse(BorrwhutConstant.INVALID_URL,
+			errormsg = getErrorResponse(BorrowhutConstant.INVALID_URL,
 					"there is no resource available for given url, wrong url", exception.getClass().toString(),
 					"borrowhut/*");
 
-			statuscode = BorrwhutConstant.INVALID_URL;
+			statuscode = BorrowhutConstant.INVALID_URL;
 		} else if (exception instanceof IllegalArgumentException || exception instanceof NumberFormatException
 				|| exception instanceof QueryParamException || exception instanceof ParamException
 				|| exception instanceof ParamException) {
 
-			errormsg = getErrorResponse(BorrwhutConstant.ILLEGAL_ARGUMENTS, exception.getMessage(),
+			errormsg = getErrorResponse(BorrowhutConstant.ILLEGAL_ARGUMENTS, exception.getMessage(),
 					exception.getClass().toString(), "borrowhut/*");
 
-			statuscode = BorrwhutConstant.ILLEGAL_ARGUMENTS;
+			statuscode = BorrowhutConstant.ILLEGAL_ARGUMENTS;
 		} else if (exception instanceof NullPointerException) {
-			errormsg = getErrorResponse(BorrwhutConstant.NULL_VALUES_IN_DB, exception.getMessage(),
+			errormsg = getErrorResponse(BorrowhutConstant.NULL_VALUES_IN_DB, exception.getMessage(),
 					exception.getClass().toString(), "borrowhut/*");
-			statuscode = BorrwhutConstant.NULL_VALUES_IN_DB;
+			statuscode = BorrowhutConstant.NULL_VALUES_IN_DB;
 
 		} else if (exception instanceof SQLException) {
-			errormsg = getErrorResponse(BorrwhutConstant.DB_EXPECTIONS, exception.getMessage(),
+			errormsg = getErrorResponse(BorrowhutConstant.DB_EXPECTIONS, exception.getMessage(),
 					exception.getClass().toString(), "borrowhut/*");
-			statuscode = BorrwhutConstant.DB_EXPECTIONS;
+			statuscode = BorrowhutConstant.DB_EXPECTIONS;
 
 		} else if (exception instanceof DataIntegrityViolationException) {
-			errormsg = getErrorResponse(BorrwhutConstant.DB_EXPECTIONS, exception.getMessage(),
+			errormsg = getErrorResponse(BorrowhutConstant.DB_EXPECTIONS, exception.getMessage(),
 					exception.getClass().toString(), "borrowhut/*");
 
 		} else {
