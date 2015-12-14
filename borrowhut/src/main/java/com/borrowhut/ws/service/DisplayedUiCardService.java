@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface DisplayedUiCardService {
 
-	public int getDistanceByUicId(int uicid);
+	public float getDistanceByUicId(int uicid);
 
 	
 }

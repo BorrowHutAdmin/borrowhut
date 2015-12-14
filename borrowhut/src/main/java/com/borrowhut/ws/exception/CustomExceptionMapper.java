@@ -3,71 +3,82 @@ package com.borrowhut.ws.exception;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import org.glassfish.jersey.server.ParamException;
+import org.glassfish.jersey.server.ParamException.QueryParamException;
+import org.springframework.dao.DataIntegrityViolationException;
 
+import com.borrowhut.ws.helper.BorrowhutConstant;
 
 @Provider
 public class CustomExceptionMapper implements ExceptionMapper<Exception> {
 
 	@Override
 	public Response toResponse(Exception exception) {
-		// TODO Auto-generated method stub
-		System.out.println("mapper is fired");
+
 		HashMap<String, String> errormsg = new HashMap<String, String>();
-		int statuscode  =0;
-		if(exception instanceof IllegalArgumentException){
-			
-	
-	
-				errormsg.put("statuscode", "801");
-				errormsg.put("message", exception.getMessage());
-				errormsg.put("exceptiontype", exception.getClass().toString());
-				errormsg.put("servicename", "searchProdduct");
-				statuscode =801;
-		}else if (exception instanceof ProductNotFoundException){
-			
-			errormsg.put("statuscode", "800");
-			errormsg.put("message", exception.getMessage());
-			errormsg.put("exceptiontype", exception.getClass().toString());
-			errormsg.put("servicename", "searchProdduct");
-			statuscode = 800;
-		}else if(exception instanceof NullPointerException){
-			errormsg.put("statuscode", "802");
-			errormsg.put("message", exception.getMessage());
-			errormsg.put("exceptiontype", exception.getClass().toString());
-			errormsg.put("servicename", "searchProdduct");
-			statuscode = 802;
-			
-			
-		}else if(exception instanceof SQLException){
-			
-			errormsg.put("statuscode", "803");
-			errormsg.put("message", exception.getMessage());
-			errormsg.put("exceptiontype", exception.getClass().toString());
-			errormsg.put("servicename", "searchProdduct");
-			statuscode = 803;
-			
-		}else if(exception instanceof ListedProductNotFoundException)
-		{		    
-			errormsg.put("statuscode", "800");
-			errormsg.put("message", exception.getMessage());
-			errormsg.put("exceptiontype", exception.getClass().getName());
-			errormsg.put("servicename", "ProductListingServiceImpl");	
-			statuscode = 800;
-			
-	    }
-		else if(exception instanceof PartyNotFoundException)
-		{		    
-			errormsg.put("statuscode", "800");
-			errormsg.put("message", exception.getMessage());
-			errormsg.put("exceptiontype", exception.getClass().getName());
-			errormsg.put("servicename", "ProductListingServiceImpl");	
-			statuscode = 800;
-	    }
-		 return Response.status(statuscode).entity(errormsg).build();
+		int statuscode = 0;
+		if (exception instanceof UiCardNotFoundException) {
+			errormsg = getErrorResponse(BorrowhutConstant.RECORD_NOT_FOUND, exception.getMessage(),
+					exception.getClass().toString(), "getStream");
+			statuscode = BorrowhutConstant.RECORD_NOT_FOUND;
+		} else if (exception instanceof ProductNotFoundException) {
+			errormsg = getErrorResponse(BorrowhutConstant.RECORD_NOT_FOUND, exception.getMessage(),
+					exception.getClass().toString(), "searchProdduct");
+			statuscode = BorrowhutConstant.RECORD_NOT_FOUND;
+		} else if (exception instanceof ListedProductNotFoundException || exception instanceof PartyNotFoundException) {
+			errormsg = getErrorResponse(BorrowhutConstant.RECORD_NOT_FOUND, exception.getMessage(),
+					exception.getClass().toString(), "getListedProduct");
+			statuscode = BorrowhutConstant.RECORD_NOT_FOUND;
+		} else if (exception instanceof NotFoundException) {
+
+			errormsg = getErrorResponse(BorrowhutConstant.INVALID_URL,
+					"there is no resource available for given url, wrong url", exception.getClass().toString(),
+					"borrowhut/*");
+
+			statuscode = BorrowhutConstant.INVALID_URL;
+		} else if (exception instanceof IllegalArgumentException || exception instanceof NumberFormatException
+				|| exception instanceof QueryParamException || exception instanceof ParamException
+				|| exception instanceof ParamException) {
+
+			errormsg = getErrorResponse(BorrowhutConstant.ILLEGAL_ARGUMENTS, exception.getMessage(),
+					exception.getClass().toString(), "borrowhut/*");
+
+			statuscode = BorrowhutConstant.ILLEGAL_ARGUMENTS;
+		} else if (exception instanceof NullPointerException) {
+			errormsg = getErrorResponse(BorrowhutConstant.NULL_VALUES_IN_DB, exception.getMessage(),
+					exception.getClass().toString(), "borrowhut/*");
+			statuscode = BorrowhutConstant.NULL_VALUES_IN_DB;
+
+		} else if (exception instanceof SQLException) {
+			errormsg = getErrorResponse(BorrowhutConstant.DB_EXPECTIONS, exception.getMessage(),
+					exception.getClass().toString(), "borrowhut/*");
+			statuscode = BorrowhutConstant.DB_EXPECTIONS;
+
+		} else if (exception instanceof DataIntegrityViolationException) {
+			errormsg = getErrorResponse(BorrowhutConstant.DB_EXPECTIONS, exception.getMessage(),
+					exception.getClass().toString(), "borrowhut/*");
+
+		} else {
+			errormsg = getErrorResponse(404, exception.getMessage(), exception.getClass().toString(), "borrowhut/*");
+			statuscode = 404;
+		}
+		return Response.status(statuscode).entity(errormsg).build();
 	}
 
+	private HashMap<String, String> getErrorResponse(int statuscode, String message, String exceptionType,
+			String servicename) {
+
+		HashMap<String, String> errormsg = new HashMap<String, String>();
+		errormsg.put("statuscode", String.valueOf(statuscode));
+		errormsg.put("message", message);
+		errormsg.put("exceptiontype", exceptionType);
+		errormsg.put("servicename", servicename);
+		return errormsg;
+
+	}
 }

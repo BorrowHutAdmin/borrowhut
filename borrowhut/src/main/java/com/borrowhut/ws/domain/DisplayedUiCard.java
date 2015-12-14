@@ -28,7 +28,7 @@ public class DisplayedUiCard implements Serializable {
 	private String tokenName;
 	
 	
-	@Column(name="TOKEN_VALUE", length=2000)
+	@Column(name="TOKEN_VALUE", length=45)
 	private String tokenValue;
 	
 	@Column(name="CARD_FACE",length=10)

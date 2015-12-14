@@ -19,7 +19,7 @@ public class DisplayedUiCardsController {
 		this.displayedUiCardService = displayedUiCardService;
 	}
 	
-	public int getDistanceByUicId(int uicid)
+	public float getDistanceByUicId(int uicid)
 	{		   
 		return displayedUiCardService.getDistanceByUicId(uicid);	
 		

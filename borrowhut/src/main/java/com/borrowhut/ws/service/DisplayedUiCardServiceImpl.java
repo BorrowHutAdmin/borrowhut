@@ -16,12 +16,15 @@ public class DisplayedUiCardServiceImpl implements DisplayedUiCardService{
 	private CustomDispalyedUiCardRepository customDispalyedUiCardRepository;
 	
 	@Override
-	public int getDistanceByUicId(int uicid) {
+	public float getDistanceByUicId(int uicid) {
 		// TODO Auto-generated method stub
 		
 		
 		
 		return customDispalyedUiCardRepository.gettDistanceByUicId(uicid);
 	}
+	
+	
+
 
 }

@@ -15,6 +15,7 @@ public class PersonalisedToken implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="TOKEN_NAME")
 	private String tokenName;
 

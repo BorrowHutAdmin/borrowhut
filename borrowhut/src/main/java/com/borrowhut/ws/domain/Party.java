@@ -16,6 +16,7 @@ public class Party implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="PTY_ID")
 	private int ptyId;
 
@@ -40,8 +41,8 @@ public class Party implements Serializable {
 	@Column(name="PTY_LATITUDE")
 	private float ptyLatitude;
 
-	@Column(name="PTY_LOCATION")
-	private Object ptyLocation;
+	/*@Column(name="PTY_LOCATION")
+	private Object ptyLocation;*/
 
 	@Column(name="PTY_LONGITUDE")
 	private float ptyLongitude;
@@ -158,13 +159,13 @@ public class Party implements Serializable {
 		this.ptyLatitude = ptyLatitude;
 	}
 
-	public Object getPtyLocation() {
+/*	public Object getPtyLocation() {
 		return this.ptyLocation;
 	}
 
 	public void setPtyLocation(Object ptyLocation) {
 		this.ptyLocation = ptyLocation;
-	}
+	}*/
 
 	public float getPtyLongitude() {
 		return this.ptyLongitude;

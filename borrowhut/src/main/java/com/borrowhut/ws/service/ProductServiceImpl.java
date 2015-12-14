@@ -14,10 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import com.borrowhut.ws.domain.ListedProductFeature;
+import com.borrowhut.ws.domain.Product;
 import com.borrowhut.ws.domain.ProductListing;
+import com.borrowhut.ws.exception.PartyNotFoundException;
 import com.borrowhut.ws.exception.ProductNotFoundException;
 import com.borrowhut.ws.repository.CustomProductListingRepository;
 import com.borrowhut.ws.repository.ProductListingRepository;
+import com.borrowhut.ws.repository.ProductRepository;
 
 @Service
 @Validated
@@ -28,6 +31,10 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Autowired
 	private ProductListingRepository productListingRepository;
+	
+	@Autowired
+	private ProductRepository productRepository;
+	
 	@Transactional
 	@Override
 	public JSONArray getSearchProduct(String productName,int prdId,String catName, float latitude,
@@ -41,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
 			 
 				 	jsonArray =	buildResult(products);
 			 else 
-				 throw new ProductNotFoundException("Product not found ");			 
+				 throw new ProductNotFoundException("Product(s) with name not found ");			 
 			
 		
 	
@@ -109,5 +116,52 @@ public class ProductServiceImpl implements ProductService {
 		
 		System.out.println("returning features"+featurelist);
 		return featurelist;
+	}
+	
+	@Transactional
+	private String getProductFeature(int productid,ProductListingRepository productListingRepository) {
+		
+		
+		System.out.println("getting features");
+		ProductListing productList =	productListingRepository.getOne(productid);
+		String featurelist = "";
+		for (ListedProductFeature feature : productList.getListedProductFeatures()) {
+			featurelist = featurelist.equals("")
+					? (featurelist + feature.getId().getFtrName() + "," + feature.getLpfFtrValue())
+					:  featurelist+","  + feature.getId().getFtrName() + "," + feature.getLpfFtrValue();
+
+		}
+		
+		System.out.println("returning features"+featurelist);
+		return featurelist;
+	}
+
+	@Transactional
+	@Override
+	public JSONArray getProductRelatedData(int productid) throws ProductNotFoundException {
+		JSONArray productList = new JSONArray();
+		JSONObject obj;
+		Map<String, Object> record;		 
+			List<Product> listofproduct = productRepository.findByprdId(productid);
+			
+			if (listofproduct != null && listofproduct.size()>0) {
+				for (Product prdlist : listofproduct) {
+					obj = new JSONObject();
+					obj.put("PRD_ID",prdlist.getPrdId() );
+					obj.put("CAT_NAME",prdlist.getCatName() );
+					obj.put("PRD_NAME",prdlist.getPrdName() );
+					obj.put("PRD_DESCRIPTION",prdlist.getPrdDescription() );
+					obj.put("PRD_PHOTO_LINK",prdlist.getPrdPhotoLink() );
+					obj.put("Listed_feature",getProductFeature(productid, productListingRepository));
+					productList.add(obj);
+				}
+			}
+			else
+			{
+				throw new ProductNotFoundException("No Product Found");
+			}
+			return productList;
+			
+	
 	}
 }

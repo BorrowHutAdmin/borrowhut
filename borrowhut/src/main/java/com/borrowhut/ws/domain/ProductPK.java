@@ -7,7 +7,6 @@ import javax.persistence.*;
  * The primary key class for the PRODUCT database table.
  * 
  */
-@Embeddable
 public class ProductPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;

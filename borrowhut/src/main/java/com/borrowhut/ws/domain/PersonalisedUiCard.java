@@ -33,12 +33,12 @@ public class PersonalisedUiCard implements Serializable {
 
 	//bi-directional many-to-one association to Party
 	@ManyToOne
-	@JoinColumn(name="PTY_ID")
+	@JoinColumn(name="PTY_ID", insertable=false, updatable=false)
 	private Party party;
 
 	//bi-directional many-to-one association to UiCard
 	@ManyToOne
-	@JoinColumn(name="UIC_ID")
+	@JoinColumn(name="UIC_ID", insertable=false, updatable=false)
 	private UiCard uiCard;
 
 	public PersonalisedUiCard() {
