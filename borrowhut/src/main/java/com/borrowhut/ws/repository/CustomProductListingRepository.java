@@ -123,4 +123,13 @@ public class CustomProductListingRepository {
 					.queryForList(sql);
 			return listofBackToken;
 		}
+	 
+	 
+	 public List getProductFeatures(int productid){			
+			String sql="SELECT  FTR_NAME,GROUP_CONCAT(FTR_ALLOWABLE_VALUES SEPARATOR ',') AS FTR_VALUE"
+					+ "	FROM FEATURE_VALUE WHERE PRODUCT_PRD_ID="+productid+"  GROUP BY PRODUCT_PRD_ID, FTR_NAME";
+			List listofprodFeature = jdbcTemplate
+					.queryForList(sql);
+			return listofprodFeature;
+		}
 }

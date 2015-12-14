@@ -29,7 +29,7 @@ public class BorrowhutLookupController {
 		@Produces("application/json")
 	public JSONArray getLookupdatawithCond(@PathParam("tablename")String tablename,@PathParam("filtercond")String filtercond)
 	{
-		return borrowhutLookupService.getLookupdatawithCond(tablename,filtercond);
+		return borrowhutLookupService.getLookupdatawithCond(tablename.toUpperCase(),filtercond);
 	}
 	
 	@GET
