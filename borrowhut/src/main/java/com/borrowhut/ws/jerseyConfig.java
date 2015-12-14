@@ -5,6 +5,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.context.annotation.Configuration;
 
 import com.borrowhut.ws.contoller.BorrowLogController;
+import com.borrowhut.ws.contoller.BorrowhutLookupController;
 import com.borrowhut.ws.contoller.Home;
 import com.borrowhut.ws.contoller.ProductController;
 import com.borrowhut.ws.contoller.ProductListingController;
@@ -26,6 +27,8 @@ public class jerseyConfig extends ResourceConfig {
 		register(UiCardController.class);
 		register(ProductController.class);
 		register(BorrowLogController.class);
+		register(BorrowhutLookupController.class);
+		
 		
 	}
 	

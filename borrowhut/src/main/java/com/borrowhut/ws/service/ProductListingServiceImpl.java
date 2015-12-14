@@ -37,17 +37,16 @@ public class ProductListingServiceImpl implements ProductListingService {
 	@Override
 	@Transactional
 	public JSONObject getProductListingByPlsid(int plsid) throws ListedProductNotFoundException {
-		ProductListing prod = productListingRepository.findOne(plsid);
-		JSONObject object = new JSONObject();
-		if(prod!=null){
+		/*ProductListing prod = productListingRepository.findOne(plsid);*/
+		ProductListing prod = productListingRepository.findByplsId(plsid);
 		
-		object.put("partyid", prod.getParty().getPtyId());
-		object.put("productlisting", getProductlsiting(prod));
-		}
-		else
-		{
+		if(prod==null){
 			throw new ListedProductNotFoundException("Listed Product Id Not Found");
 		}
+		JSONObject object = new JSONObject();
+		object.put("partyid", prod.getParty().getPtyId());
+		object.put("productlisting", getProductlsiting(prod));
+		
 		return object;
 	}
 

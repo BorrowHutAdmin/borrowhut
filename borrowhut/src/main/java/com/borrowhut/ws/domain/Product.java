@@ -12,11 +12,14 @@ import java.util.List;
 @Entity
 @Table(name="PRODUCT")
 @NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
+@IdClass(ProductPK.class)
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private ProductPK id;
+	 @Id private Integer prdId;
+	  
+	 @Id private String catName;
+	
 
 	@Column(name="PRD_DESCRIPTION", length=45)
 	private String prdDescription;
@@ -57,16 +60,32 @@ public class Product implements Serializable {
 	public Product() {
 	}
 
-	public ProductPK getId() {
+	/*public ProductPK getId() {
 		return this.id;
 	}
 
 	public void setId(ProductPK id) {
 		this.id = id;
-	}
+	}*/
 
 	public String getPrdDescription() {
 		return this.prdDescription;
+	}
+
+	public Integer getPrdId() {
+		return prdId;
+	}
+
+	public void setPrdId(Integer prdId) {
+		this.prdId = prdId;
+	}
+
+	public String getCatName() {
+		return catName;
+	}
+
+	public void setCatName(String catName) {
+		this.catName = catName;
 	}
 
 	public void setPrdDescription(String prdDescription) {

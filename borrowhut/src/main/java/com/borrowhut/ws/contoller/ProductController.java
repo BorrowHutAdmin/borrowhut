@@ -6,6 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ import com.borrowhut.ws.helper.ProductHelper;
 import com.borrowhut.ws.service.ProductService;
 
 @Component
-@Path("/searchProduct")
+@Path("/")
 public class ProductController {
 	
 	
@@ -25,7 +26,7 @@ public class ProductController {
 	this.productService = productService;
 }
 	@GET
-	@Path("/productname/{productname}/location/{location}/distance/{distance}")
+	@Path("/searchProduct/productname/{productname}/location/{location}/distance/{distance}")
 		@Produces("application/json")
 	public JSONArray searchProductByname(@PathParam("productname")String productName,@PathParam("location")String location,@PathParam("distance")float distanceinmiles) throws NumberFormatException, IllegalArgumentException, ProductNotFoundException{
 		if(!ProductHelper.validateProductSearch(productName, location, distanceinmiles))
@@ -40,7 +41,7 @@ public class ProductController {
 		
 	}
 	@GET
-	@Path("/productname/{productname}/productid/{productid}/location/{location}/distance/{distance}")
+	@Path("/searchProduct/productname/{productname}/productid/{productid}/location/{location}/distance/{distance}")
 		@Produces("application/json")
 	public JSONArray searchByProductnameAndProductid(@PathParam("productname")String productName,@PathParam("productid")int productid,@PathParam("location")String location,@PathParam("distance")float distanceinmiles) throws NumberFormatException, IllegalArgumentException, ProductNotFoundException{
 		if(!ProductHelper.validateProductSearch(productName, location, distanceinmiles))
@@ -57,7 +58,7 @@ public class ProductController {
 	}
 	
 		@GET
-		@Path("/productname/{productname}/category/{category}/location/{location}/distance/{distance}")
+		@Path("/searchProduct/productname/{productname}/category/{category}/location/{location}/distance/{distance}")
 			@Produces("application/json")
 		public JSONArray searchByProductnameAndCategory(@PathParam("productname")String productName,@PathParam("location")String location,@PathParam("distance")float distanceinmiles,@PathParam("category")String category) throws NumberFormatException, IllegalArgumentException, ProductNotFoundException{
 			if(!ProductHelper.validateProductSearch(productName, location, distanceinmiles))
@@ -74,7 +75,7 @@ public class ProductController {
 		}
 	
 		@GET
-		@Path("/productname/{productname}/productid/{productid}/category/{category}/location/{location}/distance/{distance}")
+		@Path("/searchProduct/productname/{productname}/productid/{productid}/category/{category}/location/{location}/distance/{distance}")
 			@Produces("application/json")
 		public JSONArray searchByProductnameAndProductidAndCategory(@PathParam("productname")String productName,@PathParam("location")String location,@PathParam("productid")int productid,@PathParam("category")String categoryName,@PathParam("distance")float distanceinmiles) throws NumberFormatException, IllegalArgumentException, ProductNotFoundException{
 			if(!ProductHelper.validateProductSearch(productName, location, distanceinmiles))
@@ -87,6 +88,14 @@ public class ProductController {
 			System.out.println("Category id"+categoryName);
 			return productService.getSearchProduct(productName, productid, categoryName, Float.parseFloat(lanlong[0].toString()), Float.parseFloat(lanlong[1].toString()), distanceinmiles);
 			
+			
+		}
+		@GET
+		@Path("/getProductRefData/productid/{productid}")
+			@Produces("application/json")
+		public JSONObject getProductRelatedData(@PathParam("productid")int productid) throws ProductNotFoundException {
+			System.out.println("productid id"+productid);			
+			return productService.getProductRelatedData(productid);			
 			
 		}
 			

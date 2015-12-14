@@ -14,7 +14,7 @@ import com.borrowhut.ws.helper.ProductHelper;
 import com.borrowhut.ws.service.BorrowService;
 
 @Component
-@Path("/borrow")
+@Path("/")
 public class BorrowLogController {
 
 	private final BorrowService borrowService;
