@@ -31,7 +31,7 @@ public class BorrowLogController {
 	@POST
 	@Produces("application/json")
 	public JSONObject createBorrowTXN(@Valid JSONObject borrowlogreq) throws IllegalAccessException {
-
+		
 		String PLS_ID = borrowlogreq.get("PLS_ID").toString();
 		String LENDER_PTY_ID = borrowlogreq.get("LENDER_PTY_ID").toString();
 		String BORROWER_PTY_ID = borrowlogreq.get("BORROWER_PTY_ID").toString();
