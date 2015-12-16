@@ -116,7 +116,7 @@ public class Inspiration {
 	private String getProductlsiting(int plsid, ProductListingRepository productListingRepository) {
 
 		System.out.println("getting features");
-		ProductListing productList = productListingRepository.getOne(plsid);
+		ProductListing productList = productListingRepository.findOne(plsid);
 		String featurelist = "";
 		for (ListedProductFeature feature : productList.getListedProductFeatures()) {
 			featurelist = featurelist.equals("")
