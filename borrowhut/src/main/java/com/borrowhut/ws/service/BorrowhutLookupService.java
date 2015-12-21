@@ -7,5 +7,4 @@ public interface BorrowhutLookupService {
 	JSONArray getLookupdatawithCond(String tablename, String filtercond);
 
 	JSONArray getLookupdata(String tablename);
-
 }

@@ -18,17 +18,15 @@ public class BorrowStatus implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="ID")
-	private int blsid;
+	@Column(name="BS_ID")
+	private int bsId;
 
-	
-
-	public int getBlsid() {
-		return blsid;
+	public int getId() {
+		return bsId;
 	}
 
-	public void setBlsid(int blsid) {
-		this.blsid = blsid;
+	public void setId(int id) {
+		this.bsId = id;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

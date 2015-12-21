@@ -15,28 +15,11 @@ import java.util.List;
 @IdClass(ProductPK.class)
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	 @Id private Integer prdId;
 	  
 	 @Id private String catName;
 	
-	
-
-	public Integer getPrdId() {
-		return prdId;
-	}
-
-	public void setPrdId(Integer prdId) {
-		this.prdId = prdId;
-	}
-
-	public String getCatName() {
-		return catName;
-	}
-
-	public void setCatName(String catName) {
-		this.catName = catName;
-	}
 
 	@Column(name="PRD_DESCRIPTION", length=45)
 	private String prdDescription;
@@ -87,6 +70,22 @@ public class Product implements Serializable {
 
 	public String getPrdDescription() {
 		return this.prdDescription;
+	}
+
+	public Integer getPrdId() {
+		return prdId;
+	}
+
+	public void setPrdId(Integer prdId) {
+		this.prdId = prdId;
+	}
+
+	public String getCatName() {
+		return catName;
+	}
+
+	public void setCatName(String catName) {
+		this.catName = catName;
 	}
 
 	public void setPrdDescription(String prdDescription) {

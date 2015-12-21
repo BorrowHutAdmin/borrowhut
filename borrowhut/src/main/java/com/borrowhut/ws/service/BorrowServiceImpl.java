@@ -80,52 +80,7 @@ private CustomBorrowRepository customBorrowRepository;
 	}
 	@Transactional
 	@Override
-	public Boolean progressBorrowTXNStatus(int bolid, String event) {/*
-
-		// TODO Auto-generated method stub
-	List borrowStatus=	customBorrowRepository.getBorrowStatusBybolidAndEnddate(bolid, null);
-	
-	if(borrowStatus!=null && borrowStatus.size()>0 ){
-		
-	Map<String,Object>	borrowstatus=(Map)borrowStatus.get(0);
-	String eventExisting= borrowstatus.get("BLE_EVENT").toString();
-	    switch(event.trim()){
-	    case BorrowhutConstant.BORROWED:
-	    	if(!eventExisting.equals(BorrowhutConstant.RESERVED))
-	    		throw new IllegalArgumentException("invalid event given as input, currently Status is "+eventExisting+" state ,only allowed status is "+ BorrowhutConstant.RESERVED);
-	    	break;
-	    case BorrowhutConstant.CHECKEDIN:
-	    	if(!eventExisting.equals(BorrowhutConstant.CHECKEDOUT))
-	    		throw new IllegalArgumentException("invalid event given as input, currently Status is "+eventExisting+" state ,only allowed status is "+ BorrowhutConstant.CHECKEDOUT);
-	    	break;
-	    case BorrowhutConstant.CHECKEDOUT:
-	    	if(!eventExisting.equals(BorrowhutConstant.BORROWED))
-	    		throw new IllegalArgumentException("invalid event given as input, currently Status is "+eventExisting+" state ,only allowed status is "+ BorrowhutConstant.BORROWED);
-	    	break;
-	    	default:
-	    		System.out.println("default");
-	    		break;
-	    }
-	    int borrowStatusId =Integer.parseInt(borrowstatus.get("ID").toString()) ;
-	  BorrowStatus borrowstatusrec = borrowStatusRepository.findOne(borrowStatusId);
-	  BorrowLog borrowLog =borrowstatusrec.getBorrowLog();
-	  borrowstatusrec.setBstEnddate(new Date());
-	  borrowStatusRepository.saveAndFlush(borrowstatusrec);
-	  
-	  BorrowStatus newBorrowrec = new BorrowStatus();
-	  newBorrowrec.setBorrowLog(borrowLog);
-	  newBorrowrec.setBstStartdate(new Date());
-	  BorrowLifecycleEvent ble = new BorrowLifecycleEvent();
-	  ble.setBleEvent(event);
-	  newBorrowrec.setBorrowLifecycleEvent(ble);
-	  borrowStatusRepository.saveAndFlush(newBorrowrec);
-	}else {
-		return false;
-	}
-		
-		return true;
-	
-	*/
+	public Boolean progressBorrowTXNStatus(int bolid, String event) {
 
 
 		// TODO Auto-generated method stub

@@ -23,10 +23,7 @@ public interface ProductListingRepository extends JpaRepository<ProductListing, 
 	
 	@Query(nativeQuery=true,value="SELECT * FROM PRODUCT_LISTING pl WHERE pl.CAT_NAME IN (:catnames) " )
 	List<ProductListing> getByCategories(@Param("catnames") String catnames);
-
-
 	
-	
-	
+	public ProductListing findByplsId(int partyid);
 	
 }

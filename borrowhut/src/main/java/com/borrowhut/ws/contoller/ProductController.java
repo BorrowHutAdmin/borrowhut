@@ -6,6 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -89,18 +90,13 @@ public class ProductController {
 			
 			
 		}
-		
-		
 		@GET
 		@Path("/getProductRefData/productid/{productid}")
 			@Produces("application/json")
-		public JSONArray getProductRelatedData(@PathParam("productid")int productid) throws ProductNotFoundException {
+		public JSONObject getProductRelatedData(@PathParam("productid")int productid) throws ProductNotFoundException {
 			System.out.println("productid id"+productid);			
 			return productService.getProductRelatedData(productid);			
 			
 		}
-		
-	
-		
 			
 }

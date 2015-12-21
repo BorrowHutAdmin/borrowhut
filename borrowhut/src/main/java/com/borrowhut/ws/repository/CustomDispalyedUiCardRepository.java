@@ -17,22 +17,22 @@ public class CustomDispalyedUiCardRepository {
 	public float gettDistanceByUicId(int uicid) {
 
 		float distance = 0;
-		/*
-		 * Map<String, Object> scalerValue; List distList =
-		 * jdbcTemplate.queryForList(
-		 * "SELECT TOKEN_VALUE FROM DISPLAYED_UI_CARDS WHERE TOKEN_NAME='DISTANCE' AND UIC_ID="
-		 * + uicid); System.out.println("distList:::::::"+distList);
-		 * if(distList!=null && distList.size()>0) { for(Iterator
-		 * litr=distList.iterator();litr.hasNext();) { scalerValue = (Map)
-		 * litr.next(); distance =
-		 * Float.parseFloat(scalerValue.get("TOKEN_VALUE").toString());
-		 * 
-		 * } }
-		 */
-		String tokenvalue = jdbcTemplate.queryForObject(
+		
+		 Map<String, Object> scalerValue; List distList =
+		  jdbcTemplate.queryForList(
+		  "SELECT TOKEN_VALUE FROM DISPLAYED_UI_CARDS WHERE TOKEN_NAME='DISTANCE' AND UIC_ID="
+		  + uicid); System.out.println("distList:::::::"+distList);
+		 if(distList!=null && distList.size()>0) { for(Iterator
+		  litr=distList.iterator();litr.hasNext();) { scalerValue = (Map)
+		 litr.next(); distance =
+		  Float.parseFloat(scalerValue.get("TOKEN_VALUE").toString());
+		
+		 } }
+		 
+	/*	String tokenvalue = jdbcTemplate.queryForObject(
 				"SELECT TOKEN_VALUE FROM DISPLAYED_UI_CARDS WHERE TOKEN_NAME='DISTANCE' AND UIC_ID=" + uicid,
 				String.class);
-		distance = (float) (tokenvalue == null ? 0.0 : Float.parseFloat(tokenvalue));
+		distance = (float) (tokenvalue == null ? 0.0 : Float.parseFloat(tokenvalue));*/
 		return distance;
 
 	}

@@ -16,10 +16,8 @@ import org.springframework.validation.annotation.Validated;
 import com.borrowhut.ws.domain.ListedProductFeature;
 import com.borrowhut.ws.domain.Product;
 import com.borrowhut.ws.domain.ProductListing;
-import com.borrowhut.ws.exception.PartyNotFoundException;
 import com.borrowhut.ws.exception.ProductNotFoundException;
 import com.borrowhut.ws.repository.CustomProductListingRepository;
-import com.borrowhut.ws.repository.ProductFeatureRepository;
 import com.borrowhut.ws.repository.ProductListingRepository;
 import com.borrowhut.ws.repository.ProductRepository;
 
@@ -29,142 +27,136 @@ public class ProductServiceImpl implements ProductService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
 	@Autowired
 	private CustomProductListingRepository customProductListingRepository;
-	
+
 	@Autowired
 	private ProductListingRepository productListingRepository;
-	
 	@Autowired
 	private ProductRepository productRepository;
-	
-	
-	
-	@Transactional
-	@Override
-	public JSONArray getSearchProduct(String productName,int prdId,String catName, float latitude,
-			float longitude, float distance) throws ProductNotFoundException {
-		
-		JSONArray jsonArray = new JSONArray();
-		
-		 List products =	customProductListingRepository.getProducts(productName,prdId,catName, latitude, longitude, distance);
-			 
-			 if(products!=null && products.size()>0)
-			 
-				 	jsonArray =	buildResult(products);
-			 else 
-				 throw new ProductNotFoundException("Product(s) with name not found ");			 
-			
-		
-	
-				return jsonArray;
+
+	public CustomProductListingRepository getCustomProductListingRepository() {
+		return customProductListingRepository;
+	}
+
+	public void setCustomProductListingRepository(CustomProductListingRepository customProductListingRepository) {
+		this.customProductListingRepository = customProductListingRepository;
+	}
+
+	public ProductListingRepository getProductListingRepository() {
+		return productListingRepository;
+	}
+
+	public void setProductListingRepository(ProductListingRepository productListingRepository) {
+		this.productListingRepository = productListingRepository;
+	}
+
+	public ProductRepository getProductRepository() {
+		return productRepository;
+	}
+
+	public void setProductRepository(ProductRepository productRepository) {
+		this.productRepository = productRepository;
 	}
 
 	@Transactional
-	private JSONArray buildResult(List products){
+	@Override
+	public JSONArray getSearchProduct(String productName, int prdId, String catName, float latitude, float longitude,
+			float distance) throws ProductNotFoundException {
+
+		JSONArray jsonArray = new JSONArray();
+
+		List products = customProductListingRepository.getProducts(productName, prdId, catName, latitude, longitude,
+				distance);
+
+		if (products != null && products.size() > 0)
+
+			jsonArray = buildResult(products);
+		else
+			throw new ProductNotFoundException("Product(s) with name not found ");
+
+		return jsonArray;
+	}
+
+	@Transactional
+	private JSONArray buildResult(List products) {
 		JSONArray productising = new JSONArray();
 		Map<String, Object> recrod;
-		JSONObject object  = new JSONObject();
-		int plsid =0;
-		String productlistingstr="";
-		String featurelist ="";
-		String productdesc ="";
-		String prdphotolink="";
-		System.out.println("length of records"+products.size());
-		
-								if(products!=null){
-										for(Iterator itr = products.iterator(); itr.hasNext();){
-											
-											object = new JSONObject();
-											recrod = (Map) itr.next();
-											
-											
-											
-											plsid =	Integer.parseInt(recrod.get("PLS_ID").toString())  ;
-											
-											object.put("partyid",Integer.parseInt(recrod.get("PTY_ID").toString()) );
-											
-											productdesc= recrod.get("PRD_DESCRIPTION")!=null?recrod.get("PRD_DESCRIPTION").toString():"null";
-													
-													 prdphotolink = recrod.get("PRD_PHOTO_LINK")!=null?recrod.get("PRD_PHOTO_LINK").toString():"null";
-											
-											productlistingstr =plsid+","+recrod.get("PTY_ID").toString()+","+recrod.get("CAT_NAME").toString()+","+recrod.get("PRD_NAME").toString()+
-													","+productdesc+","+prdphotolink;
-											 featurelist =		getProductlsiting(plsid,productListingRepository);
-											
-											productlistingstr=	featurelist.equals("") ? productlistingstr : productlistingstr + "," + featurelist;
-											
-									
-											object.put("productlisting", productlistingstr);
-											productising.add(object);
-										}
-								
-								
-								
-							}
-			return productising;
-		
+		JSONObject object = new JSONObject();
+		int plsid = 0;
+		String productlistingstr = "";
+		String featurelist = "";
+		String productdesc = "";
+		String prdphotolink = "";
+		System.out.println("length of records" + products.size());
+
+		if (products != null) {
+			for (Iterator itr = products.iterator(); itr.hasNext();) {
+
+				object = new JSONObject();
+				recrod = (Map) itr.next();
+
+				plsid = Integer.parseInt(recrod.get("PLS_ID").toString());
+
+				object.put("partyid", Integer.parseInt(recrod.get("PTY_ID").toString()));
+
+				productdesc = recrod.get("PRD_DESCRIPTION") != null ? recrod.get("PRD_DESCRIPTION").toString() : "null";
+
+				prdphotolink = recrod.get("PRD_PHOTO_LINK") != null ? recrod.get("PRD_PHOTO_LINK").toString() : "null";
+
+				productlistingstr = plsid + "," + recrod.get("PTY_ID").toString() + ","
+						+ recrod.get("CAT_NAME").toString() + "," + recrod.get("PRD_NAME").toString() + ","
+						+ productdesc + "," + prdphotolink;
+				featurelist = getProductlsiting(plsid, productListingRepository);
+
+				productlistingstr = featurelist.equals("") ? productlistingstr : productlistingstr + "," + featurelist;
+
+				object.put("productlisting", productlistingstr);
+				productising.add(object);
+			}
+
+		}
+		return productising;
+
 	}
+
 	@Transactional
-	private String getProductlsiting(int plsid,ProductListingRepository productListingRepository) {
-		
-		
+	private String getProductlsiting(int plsid, ProductListingRepository productListingRepository) {
+
 		System.out.println("getting features");
-		ProductListing productList =	productListingRepository.getOne(plsid);
+		ProductListing productList = productListingRepository.getOne(plsid);
 		String featurelist = "";
 		for (ListedProductFeature feature : productList.getListedProductFeatures()) {
 			featurelist = featurelist.equals("")
 					? (featurelist + feature.getId().getFtrName() + "," + feature.getLpfFtrValue())
-					:  featurelist+","  + feature.getId().getFtrName() + "," + feature.getLpfFtrValue();
+					: featurelist + "," + feature.getId().getFtrName() + "," + feature.getLpfFtrValue();
 
 		}
-		
-		System.out.println("returning features"+featurelist);
-		return featurelist;
-	}
-	
-	@Transactional
-	private String getProductFeature(int productid,ProductListingRepository productListingRepository) {
-		
-		
-		System.out.println("getting features");
-		ProductListing productList =	productListingRepository.getOne(productid);
-		String featurelist = "";
-		for (ListedProductFeature feature : productList.getListedProductFeatures()) {
-			featurelist = featurelist.equals("")
-					? (featurelist + feature.getId().getFtrName() + "," + feature.getLpfFtrValue())
-					:  featurelist+","  + feature.getId().getFtrName() + "," + feature.getLpfFtrValue();
 
-		}
-		
-		System.out.println("returning features"+featurelist);
+		System.out.println("returning features" + featurelist);
 		return featurelist;
 	}
 
 	@Transactional
 	@Override
-	public JSONArray getProductRelatedData(int productid) throws ProductNotFoundException {
-		JSONArray productList = new JSONArray();
-		JSONObject obj;
-		Map<String, Object> record;		 
-			List<Product> listofproduct = productRepository.findByprdId(productid);
-			
-			if (listofproduct != null && listofproduct.size()>0) {
-				for (Product prdlist : listofproduct) {
-					obj = new JSONObject();
-					obj.put("PRD_ID",prdlist.getPrdId() );
-					//obj.put("CAT_NAME",prdlist.getCatName() );
-					obj.put("PRD_NAME",prdlist.getPrdName() );
-					//obj.put("PRD_DESCRIPTION",prdlist.getPrdDescription() );
-					//obj.put("PRD_PHOTO_LINK",prdlist.getPrdPhotoLink() );
-					obj.put("Feature_list", customProductListingRepository.getProductFeatures(productid));
-					//obj.put("Product_feature",productFeatureRepository.findByprdId(productid));
-					productList.add(obj);				}
-			}
-			else
-			{
-				throw new ProductNotFoundException("No Product Found");
-			}
-			return productList;
-			
-	
+	public JSONObject getProductRelatedData(int productid) throws ProductNotFoundException {
+
+		
+
+		Product prd = productRepository.findByprdId(productid);
+
+		if (prd == null ) {
+			throw new ProductNotFoundException("No Product Found");
+		}
+		JSONObject 	obj = new JSONObject();
+				obj.put("PRD_ID", prd.getPrdId());
+
+				obj.put("PRD_NAME", prd.getPrdName());
+
+				obj.put("Feature_list", customProductListingRepository.getProductFeatures(productid));
+
+		
+		
+		return obj;
+
 	}
+
 }

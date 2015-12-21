@@ -29,7 +29,7 @@ public class CustomBorrowRepository {
 		public BorrowStatus mapRow(ResultSet resultset, int rowNum) throws SQLException {
 			System.out.println("event created");
 			BorrowStatus borrowStatus = new BorrowStatus();
-			borrowStatus.setBlsid(resultset.getInt("ID"));
+			borrowStatus.setId(resultset.getInt("BS_ID"));
 			BorrowLog borrowLog = new BorrowLog();
 			borrowLog.setBolId(resultset.getInt("BOL_ID"));
 			borrowStatus.setBorrowLog(borrowLog);

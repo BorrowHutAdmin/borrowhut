@@ -12,20 +12,11 @@ import java.util.List;
 @Entity
 @Table(name="PRODUCT_FEATURE")
 @NamedQuery(name="ProductFeature.findAll", query="SELECT p FROM ProductFeature p")
-@IdClass(ProductFeaturePK.class)
 public class ProductFeature implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	private String ftrName;
-
-	@Id
-	private int prdId;
-
-	@Id
-	private String catName;
-
-	
+	@EmbeddedId
+	private ProductFeaturePK id;
 
 	//bi-directional many-to-one association to ListedProductFeature
 	@OneToMany(mappedBy="productFeature")
@@ -34,13 +25,13 @@ public class ProductFeature implements Serializable {
 	public ProductFeature() {
 	}
 
-	/*public ProductFeaturePK getId() {
+	public ProductFeaturePK getId() {
 		return this.id;
 	}
 
 	public void setId(ProductFeaturePK id) {
 		this.id = id;
-	}*/
+	}
 
 	public List<ListedProductFeature> getListedProductFeatures() {
 		return this.listedProductFeatures;

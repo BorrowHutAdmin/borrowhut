@@ -13,19 +13,25 @@ import java.util.List;
 @Entity
 @Table(name="PRODUCT_LISTING")
 @NamedQuery(name="ProductListing.findAll", query="SELECT p FROM ProductListing p")
+@IdClass(ProductListingPK.class)
 public class ProductListing implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/*@EmbeddedId
 	private ProductListingPK id;*/
 	
-	@Id
+/*	@Id
 	@Column(name="PLS_ID", unique=true, nullable=false)
 	private int plsId;
 
 	@Column(name="PTY_ID", insertable=false, updatable=false, unique=true, nullable=false)
-	private int ptyId;
+	private int ptyId;*/
 
+	@Id
+	private int plsId;
+
+	@Id
+	private int ptyId;
 	
 	public int getPlsId() {
 		return this.plsId;

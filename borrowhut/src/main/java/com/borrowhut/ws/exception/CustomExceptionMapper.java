@@ -28,7 +28,7 @@ public class CustomExceptionMapper implements ExceptionMapper<Exception> {
 			statuscode = BorrowhutConstant.RECORD_NOT_FOUND;
 		} else if (exception instanceof ProductNotFoundException) {
 			errormsg = getErrorResponse(BorrowhutConstant.RECORD_NOT_FOUND, exception.getMessage(),
-					exception.getClass().toString(), "searchProdduct");
+					exception.getClass().toString(), "searchProduct");
 			statuscode = BorrowhutConstant.RECORD_NOT_FOUND;
 		} else if (exception instanceof ListedProductNotFoundException || exception instanceof PartyNotFoundException) {
 			errormsg = getErrorResponse(BorrowhutConstant.RECORD_NOT_FOUND, exception.getMessage(),
