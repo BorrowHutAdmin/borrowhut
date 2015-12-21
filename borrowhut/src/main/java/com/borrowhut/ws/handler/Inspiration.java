@@ -51,18 +51,11 @@ public class Inspiration {
 			for (Iterator itr = listofcategorywithcont.iterator(); itr.hasNext();) {
 				recrod = (Map) itr.next();
 				totalitemscount = totalitemscount + Integer.parseInt(recrod.get("CAT_COUNT").toString());
-				/*
-				 * object.put("UIC_TOKEN", TOKEN_NAME_CATEGORY);
-				 * object.put("UIC_TOKEN_VALUE", recrod.get("CAT_NAME"));
-				 * fronttokenscollection.add(object);
-				 */
+				
 			}
 			
 			object.put(TOKEN_NAME_TOTAL_ITEMS,totalitemscount);
-			/*object.put("UIC_TOKEN", TOKEN_NAME_TOTAL_ITEMS);
-
-			object.put("UIC_TOKEN_VALUE", totalitemscount);
-			fronttokenscollection.add(object);*/
+			
 		}
 
 		// get all token_name and token values expect Token_values =
@@ -70,13 +63,9 @@ public class Inspiration {
 		List listoftokens = customDispalyedUiCardRepository.getTokenNameAndValueByUcidandCardface(ucid, "FRONT");
 		for (Iterator itr = listoftokens.iterator(); itr.hasNext();) {
 			recrod = (Map) itr.next();
-			
 			object.put(recrod.get("TOKEN_NAME"),  recrod.get("TOKEN_VALUE"));
 			
-
-			/*object.put("UIC_TOKEN", recrod.get("TOKEN_NAME"));
-			object.put("UIC_TOKEN_VALUE", recrod.get("TOKEN_VALUE")); */
-			
+						
 		}
 		fronttokenscollection.add(object);
 		return fronttokenscollection;

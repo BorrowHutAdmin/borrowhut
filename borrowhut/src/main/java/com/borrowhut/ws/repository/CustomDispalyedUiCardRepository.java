@@ -61,9 +61,9 @@ public class CustomDispalyedUiCardRepository {
 	}
 
 	public List getTokenNameAndValueByUcidandCardface(int ucid, String cardface) {
-
-		return jdbcTemplate.queryForList("SELECT TOKEN_NAME,TOKEN_VALUE FROM DISPLAYED_UI_CARDS WHERE UIC_ID=" + ucid
-				+ " AND CARD_FACE='" + cardface + "' AND TOKEN_VALUE NOT IN ('CALCULATED')");
+		
+		return jdbcTemplate.queryForList("SELECT TOKEN_NAME, GROUP_CONCAT(TOKEN_VALUE) AS TOKEN_VALUE FROM DISPLAYED_UI_CARDS WHERE UIC_ID=" + ucid
+				+ " AND CARD_FACE='" + cardface + "' AND TOKEN_VALUE NOT IN ('CALCULATED') GROUP BY UIC_ID,TOKEN_NAME");
 	}
 
 	public String getDynamicColumn(int ucid) {
