@@ -23,7 +23,7 @@ public class CallToAction {
 	public JSONArray getFronttokens(int uicId, String userSpecific, int partyId) {
 		JSONArray fronttokencollection = new JSONArray();
 
-		JSONObject object;
+		JSONObject object = new JSONObject();
 		Map<String, Object> recrod;
 		switch (userSpecific.toLowerCase()) {
 
@@ -41,12 +41,13 @@ public class CallToAction {
 				if (tokens != null && tokens.size() > 0) {
 					
 					for(Iterator itr = tokens.iterator(); itr.hasNext();){
-						object = new JSONObject();
+						
 						recrod = (Map) itr.next();
-						object.put("UIC_TOKEN", recrod.get("TOKEN_NAME"));
-						object.put("UIC_TOKEN_VALUE",recrod.get("TOKEN_VALUE"));
-						fronttokencollection.add(object);
+						object.put( recrod.get("TOKEN_NAME"),recrod.get("TOKEN_VALUE"));
+						/*object.put("UIC_TOKEN_VALUE",recrod.get("TOKEN_VALUE"));*/
+						
 					}
+					fronttokencollection.add(object);
 				}
 				}
 
@@ -59,12 +60,12 @@ public class CallToAction {
 			if (tokens != null && tokens.size() > 0) {
 				
 				for(Iterator itr = tokens.iterator(); itr.hasNext();){
-					object = new JSONObject();
+					
 					recrod = (Map) itr.next();
-					object.put("UIC_TOKEN", recrod.get("TOKEN_NAME"));
-					object.put("UIC_TOKEN_VALUE",recrod.get("TOKEN_VALUE"));
-					fronttokencollection.add(object);
+					object.put( recrod.get("TOKEN_NAME"),recrod.get("TOKEN_VALUE"));
+					
 				}
+				fronttokencollection.add(object);
 			}
 			
 
