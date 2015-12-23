@@ -96,9 +96,10 @@ public class ProductServiceImplTest {
 		List products = new ArrayList();
 		products.add(prodmap);
 		
-		when(productListingRepository.getOne(1)).thenReturn(prdlist);		
+		when(productListingRepository.findByplsId(1)).thenReturn(prdlist);		
 		when(customProductListingRepository.getProducts("HAMMER", 1, "GARDENING", 48.858093f, 2.294694f, 10)).thenReturn(products);
 		JSONArray ps = productServiceImpl.getSearchProduct("HAMMER", 1, "GARDENING", 48.858093f, 2.294694f, 10);
+		
 		assertNotNull(ps);
 		verify(customProductListingRepository,times(1)).getProducts("HAMMER", 1, "GARDENING", 48.858093f, 2.294694f, 10);
 	}

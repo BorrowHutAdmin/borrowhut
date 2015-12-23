@@ -27,12 +27,13 @@ public class Inspiration {
 
 	@Autowired
 	private CustomDispalyedUiCardRepository customDispalyedUiCardRepository;
-
+	
 	public JSONArray getFronttokens(int ucid, CustomProductListingRepository customProductListingRepository,
 			float latitude, float longitude) {
 
 		JSONArray fronttokenscollection = new JSONArray();
-		JSONObject object;
+		JSONObject object=new JSONObject();
+		
 		Map<String, Object> recrod;
 		// check if token_value = "CALCULATED" and token_name ="TOTAL_ITEMS" and
 		// face_card ="FRONT" exists
@@ -48,34 +49,25 @@ public class Inspiration {
 							distance);
 			int totalitemscount = 0;
 			for (Iterator itr = listofcategorywithcont.iterator(); itr.hasNext();) {
-				object = new JSONObject();
 				recrod = (Map) itr.next();
 				totalitemscount = totalitemscount + Integer.parseInt(recrod.get("CAT_COUNT").toString());
-				/*
-				 * object.put("UIC_TOKEN", TOKEN_NAME_CATEGORY);
-				 * object.put("UIC_TOKEN_VALUE", recrod.get("CAT_NAME"));
-				 * fronttokenscollection.add(object);
-				 */
+				
 			}
-			object = new JSONObject();
-			object.put("UIC_TOKEN", TOKEN_NAME_TOTAL_ITEMS);
-
-			object.put("UIC_TOKEN_VALUE", totalitemscount);
-			fronttokenscollection.add(object);
+			
+			object.put(TOKEN_NAME_TOTAL_ITEMS,totalitemscount);
+			
 		}
 
 		// get all token_name and token values expect Token_values =
 		// "CALCULATED"
 		List listoftokens = customDispalyedUiCardRepository.getTokenNameAndValueByUcidandCardface(ucid, "FRONT");
 		for (Iterator itr = listoftokens.iterator(); itr.hasNext();) {
-			object = new JSONObject();
 			recrod = (Map) itr.next();
-
-			object.put("UIC_TOKEN", recrod.get("TOKEN_NAME"));
-			object.put("UIC_TOKEN_VALUE", recrod.get("TOKEN_VALUE"));
-			fronttokenscollection.add(object);
+			object.put(recrod.get("TOKEN_NAME"),  recrod.get("TOKEN_VALUE"));
+			
+						
 		}
-
+		fronttokenscollection.add(object);
 		return fronttokenscollection;
 
 	}
@@ -116,7 +108,7 @@ public class Inspiration {
 	private String getProductlsiting(int plsid, ProductListingRepository productListingRepository) {
 
 		System.out.println("getting features");
-		ProductListing productList = productListingRepository.getOne(plsid);
+		ProductListing productList = productListingRepository.findByplsId(plsid);
 		String featurelist = "";
 		for (ListedProductFeature feature : productList.getListedProductFeatures()) {
 			featurelist = featurelist.equals("")

@@ -66,25 +66,32 @@ public class UicardServiceImpl implements UicardService {
 		
 					case "com.borrowhut.controller.inspiration":
 						LOGGER.debug("firing inspiration handler");
-						job.put("UIC.ID", recrod.get("ID"));
-						job.put("UIC.NAME", recrod.get("NAME"));
-						JSONArray fronttokenscollection = inspirartion
-								.getFronttokens(Integer.parseInt(recrod.get("ID").toString()), customProductListingRepository,latitude,longitude);
+						/*job.put("UIC.ID", recrod.get("ID"));
+						job.put("UIC.NAME", recrod.get("NAME"));*/
+						job.put("UIC_ID", recrod.get("ID"));
+						job.put("UIC_NAME", recrod.get("NAME"));
+						JSONArray fronttokenscollection = inspirartion.getFronttokens(Integer.parseInt(recrod.get("ID").toString()), customProductListingRepository,latitude,longitude);
+								
 						job.put(FORNT_TOKENS, fronttokenscollection);
-						JSONArray backtokenscollection = inspirartion
-								.getBacktokens(Integer.parseInt(recrod.get("ID").toString()), customProductListingRepository,productListingRepository,latitude,longitude);
+						JSONArray backtokenscollection = inspirartion.getBacktokens(Integer.parseInt(recrod.get("ID").toString()), customProductListingRepository,productListingRepository,latitude,longitude);
+								
 						job.put(BACK_TOKENS, backtokenscollection);
 						break;
 					case "com.borrowhut.controller.product":
 						LOGGER.debug("firing product handler");
-						job.put("UIC.ID", recrod.get("ID"));
-						job.put("UIC.NAME", recrod.get("NAME"));	
+						/*job.put("UIC.ID", recrod.get("ID"));
+						job.put("UIC.NAME", recrod.get("NAME"));*/	
+						job.put("UIC_ID", recrod.get("ID"));
+						job.put("UIC_NAME", recrod.get("NAME"));
 						JSONArray productlisting = product.getProductListingBasedOnLocation(Integer.parseInt(recrod.get("ID").toString()), latitude, longitude, partyid, customProductListingRepository, productListingRepository);
 						job.put(FORNT_TOKENS, productlisting);
 						break;
 					case "com.borrowhut.controller.callToAction":
-							job.put("UIC.ID", recrod.get("ID"));
-							job.put("UIC.NAME", recrod.get("NAME"));
+							LOGGER.debug("firing callToAction handler");
+							/*job.put("UIC.ID", recrod.get("ID"));
+							job.put("UIC.NAME", recrod.get("NAME"));*/
+							job.put("UIC_ID", recrod.get("ID"));
+							job.put("UIC_NAME", recrod.get("NAME"));
 							JSONArray frontokens =	callToAction.getFronttokens(Integer.parseInt(recrod.get("ID").toString()), recrod.get("USER_SPECIFIC").toString(),partyid);
 							job.put(FORNT_TOKENS, frontokens);
 						break;

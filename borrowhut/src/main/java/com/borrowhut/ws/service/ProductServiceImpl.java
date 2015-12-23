@@ -33,30 +33,6 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ProductRepository productRepository;
 
-	public CustomProductListingRepository getCustomProductListingRepository() {
-		return customProductListingRepository;
-	}
-
-	public void setCustomProductListingRepository(CustomProductListingRepository customProductListingRepository) {
-		this.customProductListingRepository = customProductListingRepository;
-	}
-
-	public ProductListingRepository getProductListingRepository() {
-		return productListingRepository;
-	}
-
-	public void setProductListingRepository(ProductListingRepository productListingRepository) {
-		this.productListingRepository = productListingRepository;
-	}
-
-	public ProductRepository getProductRepository() {
-		return productRepository;
-	}
-
-	public void setProductRepository(ProductRepository productRepository) {
-		this.productRepository = productRepository;
-	}
-
 	@Transactional
 	@Override
 	public JSONArray getSearchProduct(String productName, int prdId, String catName, float latitude, float longitude,
@@ -86,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
 		String featurelist = "";
 		String productdesc = "";
 		String prdphotolink = "";
-		System.out.println("length of records" + products.size());
+		LOGGER.debug("length of records" + products.size());
 
 		if (products != null) {
 			for (Iterator itr = products.iterator(); itr.hasNext();) {
@@ -121,8 +97,8 @@ public class ProductServiceImpl implements ProductService {
 	@Transactional
 	private String getProductlsiting(int plsid, ProductListingRepository productListingRepository) {
 
-		System.out.println("getting features");
-		ProductListing productList = productListingRepository.getOne(plsid);
+		LOGGER.debug("getting features");
+		ProductListing productList =productListingRepository.findByplsId(plsid);
 		String featurelist = "";
 		for (ListedProductFeature feature : productList.getListedProductFeatures()) {
 			featurelist = featurelist.equals("")
@@ -131,8 +107,32 @@ public class ProductServiceImpl implements ProductService {
 
 		}
 
-		System.out.println("returning features" + featurelist);
+		LOGGER.debug("returning features" + featurelist);
 		return featurelist;
+	}
+
+	public CustomProductListingRepository getCustomProductListingRepository() {
+		return customProductListingRepository;
+	}
+
+	public void setCustomProductListingRepository(CustomProductListingRepository customProductListingRepository) {
+		this.customProductListingRepository = customProductListingRepository;
+	}
+
+	public ProductListingRepository getProductListingRepository() {
+		return productListingRepository;
+	}
+
+	public void setProductListingRepository(ProductListingRepository productListingRepository) {
+		this.productListingRepository = productListingRepository;
+	}
+
+	public ProductRepository getProductRepository() {
+		return productRepository;
+	}
+
+	public void setProductRepository(ProductRepository productRepository) {
+		this.productRepository = productRepository;
 	}
 
 	@Transactional

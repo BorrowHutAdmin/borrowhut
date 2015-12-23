@@ -29,7 +29,7 @@ public class jerseyConfig extends ResourceConfig {
 		register(BorrowLogController.class);
 		register(BorrowhutLookupController.class);
 		
-		
+		register(CORSResponseFilter.class);
 	}
 	
 	
