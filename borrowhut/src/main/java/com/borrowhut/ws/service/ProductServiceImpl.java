@@ -41,8 +41,7 @@ public class ProductServiceImpl implements ProductService {
 		JSONArray jsonArray = new JSONArray();
 
 		List products = customProductListingRepository.getProducts(productName, prdId, catName, latitude, longitude,
-				distance);
-
+				distance);		
 		if (products != null && products.size() > 0)
 
 			jsonArray = buildResult(products);
@@ -51,7 +50,8 @@ public class ProductServiceImpl implements ProductService {
 
 		return jsonArray;
 	}
-
+	
+	
 	@Transactional
 	private JSONArray buildResult(List products) {
 		JSONArray productising = new JSONArray();
@@ -68,7 +68,52 @@ public class ProductServiceImpl implements ProductService {
 			for (Iterator itr = products.iterator(); itr.hasNext();) {
 
 				object = new JSONObject();
-				recrod = (Map) itr.next();
+				recrod = (Map) itr.next();				
+
+				plsid = Integer.parseInt(recrod.get("PLS_ID").toString());
+				object.put("partyid", Integer.parseInt(recrod.get("PTY_ID").toString()));
+				
+				object.put("PLS_ID", Integer.parseInt(recrod.get("PLS_ID").toString()));
+				object.put("PTY_ID", Integer.parseInt(recrod.get("PTY_ID").toString()));
+				object.put("CAT_NAME", recrod.get("CAT_NAME").toString());
+				object.put("PRD_NAME",recrod.get("PRD_NAME").toString());
+				
+				productdesc = recrod.get("PRD_DESCRIPTION") != null ? recrod.get("PRD_DESCRIPTION").toString() : "null";
+				prdphotolink = recrod.get("PRD_PHOTO_LINK") != null ? recrod.get("PRD_PHOTO_LINK").toString() : "null";
+				
+				object.put("PRD_DESCRIPTION", productdesc);
+				object.put("PRD_PHOTO_LINK", prdphotolink);
+				object.put("FEATURE", getProductlsiting(plsid, productListingRepository));
+				/*featurelist = getProductlsiting(plsid, productListingRepository);
+
+				productlistingstr = featurelist.equals("") ? productlistingstr : productlistingstr + "," + featurelist;
+
+				object.put("productlisting", productlistingstr);*/
+				productising.add(object);
+			}
+
+		}
+		return productising;
+
+	}
+
+/*	@Transactional
+	private JSONArray buildResult(List products) {
+		JSONArray productising = new JSONArray();
+		Map<String, Object> recrod;
+		JSONObject object = new JSONObject();
+		int plsid = 0;
+		String productlistingstr = "";
+		String featurelist = "";
+		String productdesc = "";
+		String prdphotolink = "";
+		LOGGER.debug("length of records" + products.size());
+
+		if (products != null) {
+			for (Iterator itr = products.iterator(); itr.hasNext();) {
+
+				object = new JSONObject();
+				recrod = (Map) itr.next();				
 
 				plsid = Integer.parseInt(recrod.get("PLS_ID").toString());
 
@@ -92,9 +137,29 @@ public class ProductServiceImpl implements ProductService {
 		}
 		return productising;
 
+	}*/
+	
+	@Transactional
+	private JSONArray getProductlsiting(int plsid, ProductListingRepository productListingRepository) {
+
+		LOGGER.debug("getting features");
+		ProductListing productList =productListingRepository.findByplsId(plsid);
+		String featurelist = "";
+		JSONArray ftrarray = new JSONArray();
+		for (ListedProductFeature feature : productList.getListedProductFeatures()) {
+			JSONObject obj = new JSONObject();
+			obj.put("FTR_NAME", feature.getId().getFtrName());
+			obj.put("FTR_VALUE", feature.getLpfFtrValue());
+			ftrarray.add(obj);
+			}
+
+		LOGGER.debug("returning features" + featurelist);
+		return ftrarray;
 	}
 
-	@Transactional
+	
+
+	/*@Transactional
 	private String getProductlsiting(int plsid, ProductListingRepository productListingRepository) {
 
 		LOGGER.debug("getting features");
@@ -110,7 +175,7 @@ public class ProductServiceImpl implements ProductService {
 		LOGGER.debug("returning features" + featurelist);
 		return featurelist;
 	}
-
+*/
 	public CustomProductListingRepository getCustomProductListingRepository() {
 		return customProductListingRepository;
 	}

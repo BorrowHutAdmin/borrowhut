@@ -53,12 +53,12 @@ public class ProductListingServiceImpl implements ProductListingService {
 	public JSONArray getProductListingByPartyid(int partyid) throws PartyNotFoundException {
 		List<ProductListing> prdlisting = productListingRepository.findByptyId(partyid);
 		JSONArray jsonrecords = new JSONArray();
-		JSONObject object;
+		JSONObject object;		
 		if (prdlisting != null && prdlisting.size() > 0) {
 			for (ProductListing prdlist : prdlisting) {
 				object = new JSONObject();
-				object.put("productlisting", getProductlsiting(prdlist));
 				object.put("partyid", prdlist.getParty().getPtyId());
+				object.put("productlisting", getProductlsiting(prdlist));				
 				jsonrecords.add(object);
 			}
 		} else {
@@ -66,8 +66,35 @@ public class ProductListingServiceImpl implements ProductListingService {
 		}
 		return jsonrecords;
 	}
-
+	
 	@Transactional
+	private JSONArray getProductlsiting(ProductListing prdlist) {
+		String productlisting = "";
+		Product pdt = prdlist.getProduct();
+		Party pty = prdlist.getParty();
+		String featurelist = "";
+		JSONArray records = new JSONArray();
+		JSONObject obj=new JSONObject();
+		obj.put("PLS_ID", prdlist.getPlsId());
+		obj.put("PTY_NAME", pty.getPtyName());
+		obj.put("PTY_PHOTO", pty.getPtyPhoto());
+		obj.put("CATEGORY", pdt.getCategory().getCatName());
+		obj.put("PRD_NAME", pdt.getPrdName());
+		obj.put("PRD_DESC", pdt.getPrdDescription());
+		obj.put("PRD_PHOTOLINK",pdt.getPrdPhotoLink());
+		JSONArray ftrrecords = new JSONArray();
+		for (ListedProductFeature feature : prdlist.getListedProductFeatures()) {
+			JSONObject object=new JSONObject();
+			object.put("FTR_NAME",feature.getId().getFtrName());
+			object.put("FTR_VALUE",feature.getLpfFtrValue());	
+			ftrrecords.add(object);
+		}
+		obj.put("FEATURE", ftrrecords);
+		records.add(obj);
+		return records;
+	}
+
+	/*@Transactional
 	private String getProductlsiting(ProductListing prdlist) {
 		String productlisting = "";
 		Product pdt = prdlist.getProduct();
@@ -83,5 +110,5 @@ public class ProductListingServiceImpl implements ProductListingService {
 
 		}
 		return featurelist.equals("") ? productlisting : productlisting + "," + featurelist;
-	}
+	}*/
 }
