@@ -109,7 +109,7 @@ public class CustomProductListingRepository {
 						+ "	LEFT JOIN PARTY AS P ON PL.PTY_ID=P.PTY_ID "
 						+ "	LEFT JOIN PRODUCT AS PRD ON PL.PRD_ID=PRD.PRD_ID WHERE IFNULL(PL.PRODUCT_AVAILABLE,'Y') ='Y'"
 						+ filterCon + "  ORDER BY PLS_ID DESC ;  ");
-
+		
 		return listofrecord;
 	}
 
