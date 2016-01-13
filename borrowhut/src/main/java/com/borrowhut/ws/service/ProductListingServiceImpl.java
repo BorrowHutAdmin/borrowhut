@@ -68,12 +68,12 @@ public class ProductListingServiceImpl implements ProductListingService {
 	}
 	
 	@Transactional
-	private JSONArray getProductlsiting(ProductListing prdlist) {
+	private JSONObject getProductlsiting(ProductListing prdlist) {
 		String productlisting = "";
 		Product pdt = prdlist.getProduct();
 		Party pty = prdlist.getParty();
 		String featurelist = "";
-		JSONArray records = new JSONArray();
+	  // JSONArray records = new JSONArray();
 		JSONObject obj=new JSONObject();
 		obj.put("PLS_ID", prdlist.getPlsId());
 		obj.put("PTY_NAME", pty.getPtyName());
@@ -82,16 +82,25 @@ public class ProductListingServiceImpl implements ProductListingService {
 		obj.put("PRD_NAME", pdt.getPrdName());
 		obj.put("PRD_DESC", pdt.getPrdDescription());
 		obj.put("PRD_PHOTOLINK",pdt.getPrdPhotoLink());
-		JSONArray ftrrecords = new JSONArray();
+		/*JSONArray ftrrecords = new JSONArray();*/
 		for (ListedProductFeature feature : prdlist.getListedProductFeatures()) {
-			JSONObject object=new JSONObject();
-			object.put("FTR_NAME",feature.getId().getFtrName());
-			object.put("FTR_VALUE",feature.getLpfFtrValue());	
-			ftrrecords.add(object);
+			featurelist = featurelist.equals("")
+					? (featurelist + feature.getId().getFtrName() + "," + feature.getLpfFtrValue())
+					: featurelist + "," + feature.getId().getFtrName() + "," + feature.getLpfFtrValue();
+
 		}
-		obj.put("FEATURE", ftrrecords);
-		records.add(obj);
-		return records;
+		obj.put("FEATURE", featurelist);
+		
+		/*for (ListedProductFeature feature : prdlist.getListedProductFeatures()) {
+								JSONObject object=new JSONObject();
+								object.put("FTR_NAME",feature.getId().getFtrName());
+								object.put("FTR_VALUE",feature.getLpfFtrValue());	
+								ftrrecords.add(object);
+			
+		}*/
+		/*obj.put("FEATURE", ftrrecords);*/
+		//records.add(obj);
+		return obj;
 	}
 
 	/*@Transactional
