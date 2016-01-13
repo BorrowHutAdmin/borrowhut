@@ -20,7 +20,7 @@ public class jerseyConfig extends ResourceConfig {
 	
 	public jerseyConfig()
 	{
-		register(new JacksonJsonProvider(ObjectMapperFactory.create()));
+		/*register(new JacksonJsonProvider(ObjectMapperFactory.create()));*/
 		packages("com.borrowhut.ws.exception");
 		register(Home.class);
 		register(ProductListingController.class);

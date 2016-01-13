@@ -1,4 +1,4 @@
-package com.borrohut.ws.service;
+package com.borrowhut.ws.service;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
