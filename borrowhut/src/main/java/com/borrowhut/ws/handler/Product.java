@@ -55,7 +55,7 @@ private String getProductlsiting(int plsid,ProductListingRepository productListi
 	
 	
 	System.out.println("getting features");
-	ProductListing productList =	productListingRepository.getOne(plsid);
+	ProductListing productList =productListingRepository.findByplsId(plsid);	
 	String featurelist = "";
 	for (ListedProductFeature feature : productList.getListedProductFeatures()) {
 		featurelist = featurelist.equals("")

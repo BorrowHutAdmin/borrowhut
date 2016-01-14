@@ -16,68 +16,57 @@ public class Party implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="PTY_ID", unique=true, nullable=false)
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="PTY_ID")
 	private int ptyId;
 
-	@Column(name="PTY_ADDRESS_LINE_1", length=45)
+	@Column(name="PTY_ADDRESS_LINE_1")
 	private String ptyAddressLine1;
 
-	@Column(name="PTY_ADDRESS_LINE_2", length=45)
+	@Column(name="PTY_ADDRESS_LINE_2")
 	private String ptyAddressLine2;
 
-	@Column(name="PTY_ADDRESS_LINE_3", length=45)
+	@Column(name="PTY_ADDRESS_LINE_3")
 	private String ptyAddressLine3;
 
-	@Column(name="PTY_COUNTRY", length=45)
+	@Column(name="PTY_COUNTRY")
 	private String ptyCountry;
 
-	@Column(name="PTY_COUNTY", length=45)
+	@Column(name="PTY_COUNTY")
 	private String ptyCounty;
 
-	@Column(name="PTY_EMAIL", length=45)
+	@Column(name="PTY_EMAIL")
 	private String ptyEmail;
 
-	@Column(name="PTY_MOBILE", length=45)
+	@Column(name="PTY_LATITUDE")
+	private float ptyLatitude;
+
+	/*@Column(name="PTY_LOCATION")
+	private Object ptyLocation;*/
+
+	@Column(name="PTY_LONGITUDE")
+	private float ptyLongitude;
+
+	@Column(name="PTY_MOBILE")
 	private String ptyMobile;
 
-	@Column(name="PTY_NAME", length=45)
+	@Column(name="PTY_NAME")
 	private String ptyName;
 
-	@Column(name="PTY_PHOTO", length=45)
+	@Column(name="PTY_PHOTO")
 	private String ptyPhoto;
 
-	@Column(name="PTY_POST_CODE", length=45)
+	@Column(name="PTY_POST_CODE")
 	private String ptyPostCode;
 
-	@Column(name="PTY_TEL", length=45)
+	@Column(name="PTY_TEL")
 	private String ptyTel;
 
-	@Column(name="PTY_TOWN", length=45)
+	@Column(name="PTY_TOWN")
 	private String ptyTown;
 
-	@Column(name="PTY_TRUST_SCORE", length=45)
+	@Column(name="PTY_TRUST_SCORE")
 	private String ptyTrustScore;
-	
-	@Column(name="PTY_LATITUDE" )
-	private float ptyLatitude;
-	public float getPtyLatitude() {
-		return ptyLatitude;
-	}
-
-	public void setPtyLatitude(float ptyLatitude) {
-		this.ptyLatitude = ptyLatitude;
-	}
-
-	public float getPtyLongitude() {
-		return ptyLongitude;
-	}
-
-	public void setPtyLongitude(float ptyLongitude) {
-		this.ptyLongitude = ptyLongitude;
-	}
-
-	@Column(name="PTY_LONGITUDE" )
-	private float ptyLongitude;
 
 	//bi-directional many-to-one association to BorrowLog
 	@OneToMany(mappedBy="party")
@@ -95,9 +84,9 @@ public class Party implements Serializable {
 	@OneToMany(mappedBy="party")
 	private List<PartyAuthMech> partyAuthMeches;
 
-	//bi-directional many-to-one association to PersonalisedCard
+	//bi-directional many-to-one association to PersonalisedUiCard
 	@OneToMany(mappedBy="party")
-	private List<PersonalisedCard> personalisedCards;
+	private List<PersonalisedUiCard> personalisedUiCards;
 
 	//bi-directional many-to-one association to ProductListing
 	@OneToMany(mappedBy="party")
@@ -160,6 +149,30 @@ public class Party implements Serializable {
 
 	public void setPtyEmail(String ptyEmail) {
 		this.ptyEmail = ptyEmail;
+	}
+
+	public float getPtyLatitude() {
+		return this.ptyLatitude;
+	}
+
+	public void setPtyLatitude(float ptyLatitude) {
+		this.ptyLatitude = ptyLatitude;
+	}
+
+/*	public Object getPtyLocation() {
+		return this.ptyLocation;
+	}
+
+	public void setPtyLocation(Object ptyLocation) {
+		this.ptyLocation = ptyLocation;
+	}*/
+
+	public float getPtyLongitude() {
+		return this.ptyLongitude;
+	}
+
+	public void setPtyLongitude(float ptyLongitude) {
+		this.ptyLongitude = ptyLongitude;
 	}
 
 	public String getPtyMobile() {
@@ -306,26 +319,26 @@ public class Party implements Serializable {
 		return partyAuthMech;
 	}
 
-	public List<PersonalisedCard> getPersonalisedCards() {
-		return this.personalisedCards;
+	public List<PersonalisedUiCard> getPersonalisedUiCards() {
+		return this.personalisedUiCards;
 	}
 
-	public void setPersonalisedCards(List<PersonalisedCard> personalisedCards) {
-		this.personalisedCards = personalisedCards;
+	public void setPersonalisedUiCards(List<PersonalisedUiCard> personalisedUiCards) {
+		this.personalisedUiCards = personalisedUiCards;
 	}
 
-	public PersonalisedCard addPersonalisedCard(PersonalisedCard personalisedCard) {
-		getPersonalisedCards().add(personalisedCard);
-		personalisedCard.setParty(this);
+	public PersonalisedUiCard addPersonalisedUiCard(PersonalisedUiCard personalisedUiCard) {
+		getPersonalisedUiCards().add(personalisedUiCard);
+		personalisedUiCard.setParty(this);
 
-		return personalisedCard;
+		return personalisedUiCard;
 	}
 
-	public PersonalisedCard removePersonalisedCard(PersonalisedCard personalisedCard) {
-		getPersonalisedCards().remove(personalisedCard);
-		personalisedCard.setParty(null);
+	public PersonalisedUiCard removePersonalisedUiCard(PersonalisedUiCard personalisedUiCard) {
+		getPersonalisedUiCards().remove(personalisedUiCard);
+		personalisedUiCard.setParty(null);
 
-		return personalisedCard;
+		return personalisedUiCard;
 	}
 
 	public List<ProductListing> getProductListings() {

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+     <target>System.out</target>
+     <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n</pattern>
+        </encoder>
+    </appender>
+     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+     
+	    <file>/home/ubuntu/borrowhut.log</file>
+	     <append>true</append>
+	    <encoder>
+	      <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n</pattern>
+	    </encoder>
+	  </appender>
+	 <!--  <logger name="org.apache" level="INFO">
+	   <appender-ref ref="FILE"/>
+	  
+	  </logger> -->
+	    <logger name="com.borrowhut.ws.contoller.ProductListingController" additivity="false" level="DEBUG">
+               <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+   	 </logger>
+    <logger name="com.borrowhut.ws.service.ProductListingServiceImpl" additivity="false" level="DEBUG">
+       <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+   <logger name="com.borrowhut.ws.contoller.UiCardController" additivity="false" level="DEBUG">
+       <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+     <logger name="com.borrowhut.ws.service.UicardServiceImpl" additivity="false" level="DEBUG">
+      <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+    <root level="INFO">
+         <appender-ref ref="STDOUT"/>
+          <appender-ref ref="FILE"/>
+    </root>
+</configuration>
