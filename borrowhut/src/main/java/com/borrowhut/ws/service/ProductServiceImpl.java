@@ -33,6 +33,30 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ProductRepository productRepository;
 
+	
+	public CustomProductListingRepository getCustomProductListingRepository() {
+		return customProductListingRepository;
+	}
+
+	public void setCustomProductListingRepository(CustomProductListingRepository customProductListingRepository) {
+		this.customProductListingRepository = customProductListingRepository;
+	}
+
+	public ProductListingRepository getProductListingRepository() {
+		return productListingRepository;
+	}
+
+	public void setProductListingRepository(ProductListingRepository productListingRepository) {
+		this.productListingRepository = productListingRepository;
+	}
+
+	public ProductRepository getProductRepository() {
+		return productRepository;
+	}
+
+	public void setProductRepository(ProductRepository productRepository) {
+		this.productRepository = productRepository;
+	}
 	@Transactional
 	@Override
 	public JSONArray getSearchProduct(String productName, int prdId, String catName, float latitude, float longitude,
@@ -51,8 +75,48 @@ public class ProductServiceImpl implements ProductService {
 
 		return jsonArray;
 	}
-
+	
+	
 	@Transactional
+	private JSONArray buildResult(List products) {
+		JSONArray productising = new JSONArray();
+		Map<String, Object> recrod;
+		JSONObject object = new JSONObject();
+		int plsid = 0;
+		String productdesc = "";
+		String prdphotolink = "";
+		LOGGER.debug("length of records" + products.size());
+
+		if (products != null) {
+			for (Iterator itr = products.iterator(); itr.hasNext();) {
+
+				object = new JSONObject();
+				recrod = (Map) itr.next();				
+
+				plsid = Integer.parseInt(recrod.get("PLS_ID").toString());
+				object.put("partyid", Integer.parseInt(recrod.get("PTY_ID").toString()));
+				
+				object.put("PLS_ID", Integer.parseInt(recrod.get("PLS_ID").toString()));
+				object.put("PTY_ID", Integer.parseInt(recrod.get("PTY_ID").toString()));
+				object.put("CAT_NAME", recrod.get("CAT_NAME").toString());
+				object.put("PRD_NAME",recrod.get("PRD_NAME").toString());
+				
+				productdesc = recrod.get("PRD_DESCRIPTION") != null ? recrod.get("PRD_DESCRIPTION").toString() : "null";
+				prdphotolink = recrod.get("PRD_PHOTO_LINK") != null ? recrod.get("PRD_PHOTO_LINK").toString() : "null";
+				
+				object.put("PRD_DESCRIPTION", productdesc);
+				object.put("PRD_PHOTO_LINK", prdphotolink);
+				object.put("FEATURE", getProductlsiting(plsid, productListingRepository));
+				
+				productising.add(object);
+			}
+
+		}
+		return productising;
+
+	}
+
+	/*@Transactional
 	private JSONArray buildResult(List products) {
 		JSONArray productising = new JSONArray();
 		Map<String, Object> recrod;
@@ -92,9 +156,26 @@ public class ProductServiceImpl implements ProductService {
 		}
 		return productising;
 
+	}*/
+	
+	@Transactional
+	private JSONArray getProductlsiting(int plsid, ProductListingRepository productListingRepository) {
+
+		LOGGER.debug("getting features");
+		ProductListing productList =productListingRepository.findByplsId(plsid);
+		String featurelist = "";
+		JSONArray ftrarray = new JSONArray();
+		JSONObject obj = new JSONObject();
+		for (ListedProductFeature feature : productList.getListedProductFeatures()) {			
+			obj.put(feature.getId().getFtrName(),feature.getLpfFtrValue());					
+			}
+		ftrarray.add(obj);
+		LOGGER.debug("returning features" + featurelist);
+		return ftrarray;
 	}
 
-	@Transactional
+	
+	/*@Transactional
 	private String getProductlsiting(int plsid, ProductListingRepository productListingRepository) {
 
 		LOGGER.debug("getting features");
@@ -110,7 +191,7 @@ public class ProductServiceImpl implements ProductService {
 		LOGGER.debug("returning features" + featurelist);
 		return featurelist;
 	}
-
+*/
 	@Transactional
 	@Override
 	public JSONObject getProductRelatedData(int productid) throws ProductNotFoundException {

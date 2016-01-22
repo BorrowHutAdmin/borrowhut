@@ -140,4 +140,16 @@ public class BorrowServiceImpl implements BorrowService {
 
 	}
 
+	@Override
+	public boolean isLenderOwnsProduct(int plsid, int lenderptyid) {
+		ProductListing productListing=productListingRepository.findByplsId(plsid);
+		if (productListing.getPlsId()==plsid && productListing.getParty().getPtyId()==lenderptyid)
+		{
+			return true;
+		}
+		
+			
+		return false;
+	}
+
 }

@@ -28,6 +28,12 @@ public class Inspiration {
 	@Autowired
 	private CustomDispalyedUiCardRepository customDispalyedUiCardRepository;
 	
+	
+
+	public void setCustomDispalyedUiCardRepository(CustomDispalyedUiCardRepository customDispalyedUiCardRepository) {
+		this.customDispalyedUiCardRepository = customDispalyedUiCardRepository;
+	}
+
 	public JSONArray getFronttokens(int ucid, CustomProductListingRepository customProductListingRepository,
 			float latitude, float longitude) {
 

@@ -68,6 +68,31 @@ public class ProductListingServiceImpl implements ProductListingService {
 	}
 
 	@Transactional
+	private JSONObject getProductlsiting(ProductListing prdlist) {
+		Product pdt = prdlist.getProduct();
+		Party pty = prdlist.getParty();
+		
+		JSONObject obj=new JSONObject();
+		String featurelist = "";
+		obj.put("PLS_ID", prdlist.getPlsId());
+		obj.put("PTY_NAME", pty.getPtyName());
+		obj.put("PTY_PHOTO", pty.getPtyPhoto());
+		obj.put("CATEGORY", pdt.getCategory().getCatName());
+		obj.put("PRD_NAME", pdt.getPrdName());
+		obj.put("PRD_DESC", pdt.getPrdDescription());
+		obj.put("PRD_PHOTOLINK",pdt.getPrdPhotoLink());
+		
+		/*JSONArray ftrrecords = new JSONArray();*/
+		for (ListedProductFeature feature : prdlist.getListedProductFeatures()) {
+			featurelist = featurelist.equals("")
+					? (featurelist + feature.getId().getFtrName() + "," + feature.getLpfFtrValue())
+					: featurelist + "," + feature.getId().getFtrName() + "," + feature.getLpfFtrValue();
+
+		}
+		obj.put("FEATURE", featurelist);
+		return obj;
+	}
+	/*@Transactional
 	private String getProductlsiting(ProductListing prdlist) {
 		String productlisting = "";
 		Product pdt = prdlist.getProduct();
@@ -83,5 +108,5 @@ public class ProductListingServiceImpl implements ProductListingService {
 
 		}
 		return featurelist.equals("") ? productlisting : productlisting + "," + featurelist;
-	}
+	}*/
 }

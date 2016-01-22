@@ -46,7 +46,11 @@ public class BorrowLogController {
 				|| BORROW_EVENT.equals(BorrowhutConstant.BORROWED))) {
 			throw new IllegalArgumentException("incorrect parameter,only " + BorrowhutConstant.RESERVED + " and "
 					+ BorrowhutConstant.BORROWED + " are allowed");
+		}else if(!borrowService.isLenderOwnsProduct(Integer.parseInt(PLS_ID), Integer.parseInt(LENDER_PTY_ID))){
+			throw new IllegalArgumentException("Product id "+PLS_ID+" is not owned by Party id "+LENDER_PTY_ID);
+			
 		}
+		
 		return borrowService.createBorrowTxn(Integer.parseInt(PLS_ID), Integer.parseInt(LENDER_PTY_ID),
 				Integer.parseInt(BORROWER_PTY_ID), START_DATE, END_DATE, BORROW_EVENT);
 

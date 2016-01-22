@@ -25,6 +25,8 @@ import com.borrowhut.ws.repository.ProductListingRepository;
 @Service
 @Validated
 public class UicardServiceImpl implements UicardService {
+	
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UicardServiceImpl.class);
 	private static String FORNT_TOKENS = "CardFronttokens";
 	private static String BACK_TOKENS = "CardReversetokens";
@@ -44,6 +46,14 @@ public class UicardServiceImpl implements UicardService {
 		this.inspirartion = inspirartion;
 		this.product =product;
 		this.callToAction =callToAction;
+	}
+	
+	public void setCustomProductListingRepository(CustomProductListingRepository customProductListingRepository) {
+		this.customProductListingRepository = customProductListingRepository;
+	}
+	
+	public void setProductListingRepository(ProductListingRepository productListingRepository) {
+		this.productListingRepository = productListingRepository;
 	}
 	@Override
 	@Transactional
