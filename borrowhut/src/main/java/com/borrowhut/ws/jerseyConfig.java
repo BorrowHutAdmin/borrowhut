@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import com.borrowhut.ws.contoller.BorrowLogController;
 import com.borrowhut.ws.contoller.BorrowhutLookupController;
 import com.borrowhut.ws.contoller.Home;
+import com.borrowhut.ws.contoller.PartyController;
 import com.borrowhut.ws.contoller.ProductController;
 import com.borrowhut.ws.contoller.ProductListingController;
 import com.borrowhut.ws.contoller.UiCardController;
@@ -28,7 +29,7 @@ public class jerseyConfig extends ResourceConfig {
 		register(ProductController.class);
 		register(BorrowLogController.class);
 		register(BorrowhutLookupController.class);
-		
+		register(PartyController.class);
 		register(CORSResponseFilter.class);
 	}
 	

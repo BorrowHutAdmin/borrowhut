@@ -1,7 +1,9 @@
 package com.borrowhut.ws.contoller;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -9,9 +11,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.borrowhut.ws.exception.ProductNotFoundException;
 import com.borrowhut.ws.helper.ProductHelper;
+import com.borrowhut.ws.service.PartyService;
 import com.borrowhut.ws.service.ProductService;
 
 @Component
@@ -20,11 +24,16 @@ public class ProductController {
 	
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
-  private final ProductService productService;
+	
+	private final ProductService productService;
+	private final PartyService partyService;
+  
   @Inject
- public ProductController(final ProductService productService) {
+ public ProductController(final ProductService productService,final PartyService partyService) {
 	this.productService = productService;
+	this.partyService = partyService;
 }
+  
 	@GET
 	@Path("/searchProduct/productname/{productname}/location/{location}/distance/{distance}")
 		@Produces("application/json")
@@ -96,7 +105,38 @@ public class ProductController {
 		public JSONObject getProductRelatedData(@PathParam("productid")int productid) throws ProductNotFoundException {
 			System.out.println("productid id"+productid);			
 			return productService.getProductRelatedData(productid);			
-			
+		
 		}
+		@Path("/CreateRequest")
+		@POST
+		@Produces("application/json")
+		public JSONObject getCreateRequest(@Valid JSONObject createreq) throws IllegalAccessException{
 			
+			int ptyid=Integer.parseInt(createreq.get("PTY_ID").toString());
+			int prdid=Integer.parseInt(createreq.get("PRD_ID").toString());
+			String catname=createreq.get("CAT_NAME").toString();
+			String proddesc=createreq.get("PROD_DESC").toString();
+			
+			System.out.println("ptyid "+ ptyid);
+			System.out.println("prdid "+ prdid);
+			System.out.println("catname "+ catname);
+			System.out.println("proddesc "+ proddesc);
+			
+			
+			if(ptyid == 0){
+				throw new IllegalArgumentException(" input parameter(s) cannot be null or empty");
+			}else if(!partyService.isParty(ptyid)){
+				throw new IllegalArgumentException("Party id "+ptyid+" is not active user ");
+			}/*else if(!productService.isProductBelongsToCategory(prdid,catname)){
+				throw new IllegalArgumentException("Product id "+prdid+" is not blongs to Category id "+catname);
+			}*/
+			
+			Boolean b =productService.CreateRequest(ptyid,prdid,catname,proddesc);
+			JSONObject result = new JSONObject();
+			result.put("result", b == true ? "success" : "failure");
+			return result;
+		}
+		
+	
+	
 }

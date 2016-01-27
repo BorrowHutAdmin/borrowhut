@@ -16,10 +16,13 @@ import org.springframework.validation.annotation.Validated;
 import com.borrowhut.ws.domain.ListedProductFeature;
 import com.borrowhut.ws.domain.Product;
 import com.borrowhut.ws.domain.ProductListing;
+import com.borrowhut.ws.domain.ProductRequest;
+import com.borrowhut.ws.domain.ProductRequestPK;
 import com.borrowhut.ws.exception.ProductNotFoundException;
 import com.borrowhut.ws.repository.CustomProductListingRepository;
 import com.borrowhut.ws.repository.ProductListingRepository;
 import com.borrowhut.ws.repository.ProductRepository;
+import com.borrowhut.ws.repository.ProductRequestRepository;
 
 @Service
 @Validated
@@ -30,8 +33,12 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	private ProductListingRepository productListingRepository;
+	
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private ProductRequestRepository productRequestRepository;
 
 	
 	public CustomProductListingRepository getCustomProductListingRepository() {
@@ -57,6 +64,15 @@ public class ProductServiceImpl implements ProductService {
 	public void setProductRepository(ProductRepository productRepository) {
 		this.productRepository = productRepository;
 	}
+	
+	public ProductRequestRepository getProductRequestRepository() {
+		return productRequestRepository;
+	}
+
+	public void setProductRequestRepository(ProductRequestRepository productRequestRepository) {
+		this.productRequestRepository = productRequestRepository;
+	}
+	
 	@Transactional
 	@Override
 	public JSONArray getSearchProduct(String productName, int prdId, String catName, float latitude, float longitude,
@@ -195,11 +211,7 @@ public class ProductServiceImpl implements ProductService {
 	@Transactional
 	@Override
 	public JSONObject getProductRelatedData(int productid) throws ProductNotFoundException {
-
-		
-
 		Product prd = productRepository.findByprdId(productid);
-
 		if (prd == null ) {
 			throw new ProductNotFoundException("No Product Found");
 		}
@@ -212,8 +224,39 @@ public class ProductServiceImpl implements ProductService {
 
 		
 		
-		return obj;
+		return obj;	
 
 	}
 
+	@Override
+	public boolean isProductBelongsToCategory(int prdid, String catname) {
+		Product product=productRepository.findByprdId(prdid);
+		if(product==null){
+			return false;
+		}
+		else if(prdid==product.getPrdId() && catname.equals(product.getCatName())){
+		return true;
+		}
+
+		return false;
+	}
+
+	@Transactional
+	@Override
+	public Boolean CreateRequest(int ptyid, int prdid, String catname, String proddesc) {
+		
+		if(!(ptyid==0)){
+			LOGGER.debug("creating request for the product id "+prdid+"catname "+"productdescription "+proddesc);
+			ProductRequest prdreq=new ProductRequest();
+			prdreq.setPartyPtyId(ptyid);
+			prdreq.setProductPrdId(prdid);
+			prdreq.setProductCatName(catname);
+			prdreq.setProductDesc(proddesc);
+			productRequestRepository.saveAndFlush(prdreq);
+			LOGGER.debug("requesting done");
+			return true;
+		}
+		
+		return false;
+	}
 }
