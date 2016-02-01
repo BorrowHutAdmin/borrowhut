@@ -12,7 +12,7 @@ public interface PartyService {
 	public Boolean updatePartyDetailsById(int ptyId, String ptyName, String ptyAddressLine1, String ptyAddressLine2,
 			String ptyAddressLine3, String ptyTown, String ptyCounty, String ptyPostCode, String ptyCountry,
 			float ptyLatitude, float ptyLongitude, String ptyTel, String ptyMobile, String ptyEmail, String ptyPhoto,
-			String ptyTrustScore);
+			String ptyTrustScore) throws PartyNotFoundException;
 
 	public Boolean registerParty(String ptyName, String ptyMobile);
 

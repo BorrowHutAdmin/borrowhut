@@ -47,7 +47,7 @@ public class PartyController {
 	  @Path("/UpdateCustomerDetails")
 		@POST
 		@Produces("application/json")
-		public JSONObject updatePartyDetailsById(@Valid JSONObject custdetails) throws IllegalAccessException{
+		public JSONObject updatePartyDetailsById(@Valid JSONObject custdetails) throws IllegalAccessException, PartyNotFoundException{
 		  
 		  int ptyid=Integer.parseInt(custdetails.get("PTY_ID").toString());
 		  String ptyname=custdetails.get("PTY_NAME").toString();

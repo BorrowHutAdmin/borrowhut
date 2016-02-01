@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 
 import com.borrowhut.ws.domain.MyTrustCircle;
 import com.borrowhut.ws.domain.Party;
+import com.borrowhut.ws.domain.PartyAuthMech;
 import com.borrowhut.ws.domain.Product;
 import com.borrowhut.ws.domain.ProductRequest;
 import com.borrowhut.ws.exception.PartyNotFoundException;
@@ -74,7 +75,16 @@ public class PartyServiceImpl implements PartyService {
 			party.setPtyName(ptyName);
 			party.setPtyMobile(ptyMobile);
 			partyRepository.saveAndFlush(party);
+			//PartyAuthMech pam =new PartyAuthMech();
+			//pam.setParty(party);
+			
+			
+			
 			LOGGER.debug("registering party is done ");
+			
+			System.out.println("party "+party.getPtyId());
+			
+			
 			return true;
 		}
 		return false;
@@ -86,7 +96,7 @@ public class PartyServiceImpl implements PartyService {
 	public Boolean updatePartyDetailsById(int ptyId, String ptyName, String ptyAddressLine1, String ptyAddressLine2,
 			String ptyAddressLine3, String ptyTown, String ptyCounty, String ptyPostCode, String ptyCountry,
 			float ptyLatitude,float ptyLongitude, String ptyTel, String ptyMobile, String ptyEmail, String ptyPhoto,
-			String ptyTrustScore) {
+			String ptyTrustScore) throws PartyNotFoundException {
 		if(!(ptyId==0)){
 			LOGGER.debug("updating party details of party id "+ptyId );
 			Party party=partyRepository.findOne(ptyId);
@@ -109,9 +119,8 @@ public class PartyServiceImpl implements PartyService {
 			LOGGER.debug("updating party details is done");
 			
 			return true;
-		}
-		
-		return false;
+		}else
+			throw new PartyNotFoundException("Party with name not found");
 			
 	}
 
@@ -128,7 +137,6 @@ public class PartyServiceImpl implements PartyService {
 		}
 		LOGGER.debug("Retrieving  party details for paty id "+partyid);
 		JSONObject obj1=new JSONObject();
-		JSONObject obj2=new JSONObject();
 		JSONObject 	ptyobj = new JSONObject();
 		ptyobj.put("PTY_ID", party.getPtyId());
 		ptyobj.put("PTY_NAME", party.getPtyName());
@@ -148,8 +156,6 @@ public class PartyServiceImpl implements PartyService {
 		ptyobj.put("PTY_TRUST_SCORE", party.getPtyTrustScore());
 		
 		obj1.put("PARTY", ptyobj);
-		
-	
 		JSONArray trustarray=new JSONArray();
 		
 		List<MyTrustCircle> mtclist=myTrustCircleRepository.findByPtyId(partyid);

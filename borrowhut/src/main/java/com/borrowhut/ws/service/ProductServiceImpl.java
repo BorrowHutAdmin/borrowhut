@@ -222,8 +222,6 @@ public class ProductServiceImpl implements ProductService {
 
 				obj.put("Feature_list", customProductListingRepository.getProductFeatures(productid));
 
-		
-		
 		return obj;	
 
 	}
