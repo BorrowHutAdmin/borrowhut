@@ -11,12 +11,26 @@ import javax.persistence.*;
 @Entity
 @Table(name="PARTY_AUTH_MECH")
 @NamedQuery(name="PartyAuthMech.findAll", query="SELECT p FROM PartyAuthMech p")
+@IdClass(PartyAuthMechPK.class)
 public class PartyAuthMech implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
+	/*@EmbeddedId
 	private PartyAuthMechPK id;
+*/
+	
+	/*@Column(name="PTY_ID", insertable=false, updatable=false, unique=true, nullable=false)
+	private int ptyId;
 
+	@Column(name="AMH_ID", insertable=false, updatable=false, unique=true, nullable=false, length=10)
+	private String amhId;*/
+	
+	@Id
+	private int ptyId;
+	
+	@Id
+	private String amhId;
+	
 	@Column(name="PAM_AUTH_ID", length=45)
 	private String pamAuthId;
 
@@ -36,12 +50,25 @@ public class PartyAuthMech implements Serializable {
 	public PartyAuthMech() {
 	}
 
-	public PartyAuthMechPK getId() {
+	/*public PartyAuthMechPK getId() {
 		return this.id;
 	}
 
 	public void setId(PartyAuthMechPK id) {
 		this.id = id;
+	}*/
+	
+	public int getPtyId() {
+		return this.ptyId;
+	}
+	public void setPtyId(int ptyId) {
+		this.ptyId = ptyId;
+	}
+	public String getAmhId() {
+		return this.amhId;
+	}
+	public void setAmhId(String amhId) {
+		this.amhId = amhId;
 	}
 
 	public String getPamAuthId() {

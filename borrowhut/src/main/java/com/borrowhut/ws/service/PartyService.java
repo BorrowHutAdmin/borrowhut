@@ -14,7 +14,7 @@ public interface PartyService {
 			float ptyLatitude, float ptyLongitude, String ptyTel, String ptyMobile, String ptyEmail, String ptyPhoto,
 			String ptyTrustScore) throws PartyNotFoundException;
 
-	public Boolean registerParty(String ptyName, String ptyMobile);
+	public Boolean registerParty(String ptyName, String ptyMobile, String authToken);
 
 	public JSONObject retrievePartyDetailsById(int partyid) throws PartyNotFoundException;
 

@@ -80,7 +80,13 @@ public class ProductListingServiceImpl implements ProductListingService {
 		obj.put("CATEGORY", pdt.getCategory().getCatName());
 		obj.put("PRD_NAME", pdt.getPrdName());
 		obj.put("PRD_DESC", pdt.getPrdDescription());
+		
 		obj.put("PRD_PHOTOLINK",pdt.getPrdPhotoLink());
+		obj.put("PLS_FIRST_CIRCLE_PRICE",prdlist.getPlsFirstCirclePrice());
+		obj.put("PLS_SECOND_CIRCLE_PRICE",prdlist.getPlsSecondCirclePrice());
+		obj.put("PHONE_NUMBER", pty.getPtyMobile());
+		obj.put("EXPIRY_DATE",prdlist.getPlsExpiry().toString());
+		
 		
 		/*JSONArray ftrrecords = new JSONArray();*/
 		for (ListedProductFeature feature : prdlist.getListedProductFeatures()) {

@@ -7,6 +7,6 @@ import com.borrowhut.ws.domain.Product;
 
 public interface PartyRepository extends JpaRepository<Party, Integer> {
 
-	//public Party findByprdId(int partyid);
+	public Party findByptyId(int partyid);
 	
 }

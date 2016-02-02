@@ -32,19 +32,20 @@ public class PartyController {
 		public JSONObject registerParty(@Valid JSONObject custreg) throws IllegalAccessException{
 		  String ptyName=custreg.get("PTY_NAME").toString();
 		  String ptyMobile =custreg.get("PTY_MOBILE").toString();
+		  String authToken= custreg.get("AUTH_TOKEN").toString();
 		  
-		  if(ptyName==null || ptyMobile==null || ptyName=="" || ptyMobile==""){
+		  if(ptyName==null || ptyMobile==null || ptyName=="" || ptyMobile=="" || authToken==null || authToken=="" ){
 			  throw new IllegalArgumentException(" input parameter(s) cannot be null or empty");
 		  }
 		  
-		  Boolean b=partyService.registerParty(ptyName,ptyMobile);
+		  Boolean b=partyService.registerParty(ptyName,ptyMobile,authToken);
 		  
 		  JSONObject result = new JSONObject();
 			result.put("result", b == true ? "success" : "failure");
 			return result;
 	 
 	  }
-	  @Path("/UpdateCustomerDetails")
+	  @Path("/updateCustomerDetails")
 		@POST
 		@Produces("application/json")
 		public JSONObject updatePartyDetailsById(@Valid JSONObject custdetails) throws IllegalAccessException, PartyNotFoundException{

@@ -107,7 +107,7 @@ public class ProductController {
 			return productService.getProductRelatedData(productid);			
 		
 		}
-		@Path("/CreateRequest")
+		@Path("/createRequest")
 		@POST
 		@Produces("application/json")
 		public JSONObject getCreateRequest(@Valid JSONObject createreq) throws IllegalAccessException{

@@ -16,14 +16,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import com.borrowhut.ws.domain.AuthMech;
 import com.borrowhut.ws.domain.MyTrustCircle;
 import com.borrowhut.ws.domain.Party;
 import com.borrowhut.ws.domain.PartyAuthMech;
+import com.borrowhut.ws.domain.PartyAuthMechPK;
 import com.borrowhut.ws.domain.Product;
 import com.borrowhut.ws.domain.ProductRequest;
 import com.borrowhut.ws.exception.PartyNotFoundException;
 import com.borrowhut.ws.exception.ProductNotFoundException;
 import com.borrowhut.ws.repository.MyTrustCircleRepository;
+import com.borrowhut.ws.repository.PartyAuthMechRepository;
 import com.borrowhut.ws.repository.PartyRepository;
 import com.borrowhut.ws.repository.ProductListingRepository;
 import com.borrowhut.ws.repository.ProductRepository;
@@ -38,6 +41,9 @@ public class PartyServiceImpl implements PartyService {
 	
 	@Autowired
 	private MyTrustCircleRepository myTrustCircleRepository;
+	
+	@Autowired
+	private PartyAuthMechRepository partyAuthMechRepository;
 	
 	public void setPartyRepository(PartyRepository partyRepository) {
 		this.partyRepository = partyRepository;
@@ -67,18 +73,22 @@ public class PartyServiceImpl implements PartyService {
 	
 	
 	@Override
-	public Boolean registerParty(String ptyName, String ptyMobile) {
+	public Boolean registerParty(String ptyName, String ptyMobile, String authToken) {
 		
-		if(!(ptyName==null || ptyMobile==null)){
+		if(!(ptyName==null || ptyMobile==null || authToken==null)){
 			LOGGER.debug("registering party ");
 			Party party=new Party();
 			party.setPtyName(ptyName);
 			party.setPtyMobile(ptyMobile);
-			partyRepository.saveAndFlush(party);
-			//PartyAuthMech pam =new PartyAuthMech();
-			//pam.setParty(party);
+			partyRepository.saveAndFlush(party);		
 			
+			PartyAuthMech pam =new PartyAuthMech();
 			
+			pam.setPtyId(party.getPtyId());
+			pam.setAmhId("TW");
+			pam.setPamAuthId("null");
+			pam.setPamAuthToken(authToken);
+			partyAuthMechRepository.saveAndFlush(pam);
 			
 			LOGGER.debug("registering party is done ");
 			
@@ -129,8 +139,7 @@ public class PartyServiceImpl implements PartyService {
 	@Transactional
 	public JSONObject retrievePartyDetailsById(int partyid ) throws PartyNotFoundException {
 		
-		//Party party = partyRepository.findByprdId(partyid);
-		Party party = partyRepository.findOne(partyid);
+		Party party = partyRepository.findByptyId(partyid);
 		
 		if (party == null ) {
 			throw new PartyNotFoundException("No Product Found");
@@ -155,6 +164,8 @@ public class PartyServiceImpl implements PartyService {
 		ptyobj.put("PTY_PHOTO", party.getPtyPhoto());
 		ptyobj.put("PTY_TRUST_SCORE", party.getPtyTrustScore());
 		
+		LOGGER.debug("Retrieving  party details is done and details is "+ptyobj);
+		LOGGER.debug("Retrieving  party "+party.getPtyId());
 		obj1.put("PARTY", ptyobj);
 		JSONArray trustarray=new JSONArray();
 		
@@ -171,6 +182,8 @@ public class PartyServiceImpl implements PartyService {
 		obj1.put("TRUST_TABLE", trustarray);
 		LOGGER.debug("Retrieving  party details is done and details is " +trustarray);
 		return obj1;
+		
+		
 		}
 
 	
