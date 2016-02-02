@@ -1,22 +1,19 @@
 package com.borrowhut.ws.service;
 
+import org.json.simple.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.mockito.exceptions.base.MockitoException;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.borrowhut.ws.domain.MyTrustCircle;
 import com.borrowhut.ws.domain.Party;
@@ -74,7 +71,8 @@ public class PartyServiceImplTest {
 	@Test
 	 public void testShouldretrievePartyDetailsById() throws PartyNotFoundException{
 		
-		Party party=mock(Party.class);
+		Party party=new Party();
+	//	Party party=mock(Party.class);
 		
 		party.setPtyId(1);
 		party.setPtyName("pikazza olivia");
@@ -102,16 +100,15 @@ public class PartyServiceImplTest {
 		mtc.setParty1(party);
 		mtc.setParty2(ptycircle1);
 		mtc.setMtcCircle("1");
-		
+
 		List value=new ArrayList();
-		
-		Map map=new HashMap();
-		map.put("PARTY_ID", mtc.getMtcContactPtyId());
-		map.put("TRUST_CIRCLE",mtc.getMtcCircle());
-		value.add(map);
-		
-		when(partyRepository.findOne(1)).thenReturn(party);	
+
+		when(partyRepository.findByptyId(1)).thenReturn(party);	
 		when(myTrustCircleRepository.findByPtyId(1)).thenReturn(value);
+		
+		JSONObject jsob=partyServiceImpl.retrievePartyDetailsById(1);
+		System.out.println("the party details  "+jsob);
+		
 	}
 
 }

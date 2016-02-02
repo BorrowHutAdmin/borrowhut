@@ -114,9 +114,8 @@ public class UicardServiceImplTest {
 		when(customDispalyedUiCardRepository.getTokenNameAndValueByUcidandCardface(1,"FRONT")).thenReturn(listfronttokens);
 		when(customDispalyedUiCardRepository.getDynamicColumn(1)).thenReturn("PRODUCT_LISTING.PLS_ID,PRODUCT_LISTING.PTY_ID,PARTY.PTY_NAME,PRODUCT_LISTING.PRD_ID,PRODUCT.PRD_NAME,PRODUCT.PRD_DESCRIPTION,PRODUCT.PRD_PHOTO_LINK");
 		when(customDispalyedUiCardRepository.gettDistanceByUicId(1)).thenReturn(10f);
-		when(productListingRepository.findByplsId(1)).thenReturn(prdlist);	
+		when(productListingRepository.findByplsId(1)).thenReturn(prdlist);
 		when(customProductListingRepository.getProductListForBackToken(1,  48.858093f, 2.294694f, 10f, "PRODUCT_LISTING.PLS_ID,PRODUCT_LISTING.PTY_ID,PARTY.PTY_NAME,PRODUCT_LISTING.PRD_ID,PRODUCT.PRD_NAME,PRODUCT.PRD_DESCRIPTION,PRODUCT.PRD_PHOTO_LINK")).thenReturn(listbacktokensrecords);
-		
 		JSONArray jsonArray=uicardServiceImpl.getUicard(1, 48.858093f, 2.294694f);
 		System.out.println("out put"+jsonArray.toString());
 		
