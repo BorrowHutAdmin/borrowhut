@@ -30,11 +30,15 @@ public class CustomExceptionMapper implements ExceptionMapper<Exception> {
 			errormsg = getErrorResponse(BorrowhutConstant.RECORD_NOT_FOUND, exception.getMessage(),
 					exception.getClass().toString(), "searchProduct");
 			statuscode = BorrowhutConstant.RECORD_NOT_FOUND;
-		} else if (exception instanceof ListedProductNotFoundException || exception instanceof PartyNotFoundException) {
+		} else if (exception instanceof ListedProductNotFoundException ) {
 			errormsg = getErrorResponse(BorrowhutConstant.RECORD_NOT_FOUND, exception.getMessage(),
 					exception.getClass().toString(), "getListedProduct");
 			statuscode = BorrowhutConstant.RECORD_NOT_FOUND;
-		} else if (exception instanceof NotFoundException) {
+		}else if ( exception instanceof PartyNotFoundException) {
+			errormsg = getErrorResponse(BorrowhutConstant.RECORD_NOT_FOUND, exception.getMessage(),
+					exception.getClass().toString(), "update/retriveCustomerDetails");
+			statuscode = BorrowhutConstant.RECORD_NOT_FOUND;
+			} else if (exception instanceof NotFoundException) {
 
 			errormsg = getErrorResponse(BorrowhutConstant.INVALID_URL,
 					"there is no resource available for given url, wrong url", exception.getClass().toString(),

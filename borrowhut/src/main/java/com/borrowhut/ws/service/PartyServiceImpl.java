@@ -2,11 +2,7 @@ package com.borrowhut.ws.service;
 
 
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -16,20 +12,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import com.borrowhut.ws.domain.AuthMech;
 import com.borrowhut.ws.domain.MyTrustCircle;
 import com.borrowhut.ws.domain.Party;
 import com.borrowhut.ws.domain.PartyAuthMech;
-import com.borrowhut.ws.domain.PartyAuthMechPK;
-import com.borrowhut.ws.domain.Product;
 import com.borrowhut.ws.domain.ProductRequest;
 import com.borrowhut.ws.exception.PartyNotFoundException;
-import com.borrowhut.ws.exception.ProductNotFoundException;
 import com.borrowhut.ws.repository.MyTrustCircleRepository;
 import com.borrowhut.ws.repository.PartyAuthMechRepository;
 import com.borrowhut.ws.repository.PartyRepository;
-import com.borrowhut.ws.repository.ProductListingRepository;
-import com.borrowhut.ws.repository.ProductRepository;
+import com.borrowhut.ws.repository.ProductRequestRepository;
 
 @Service
 @Validated
@@ -45,6 +36,9 @@ public class PartyServiceImpl implements PartyService {
 	@Autowired
 	private PartyAuthMechRepository partyAuthMechRepository;
 	
+	@Autowired
+	private ProductRequestRepository productRequestRepository;
+	
 	public void setPartyRepository(PartyRepository partyRepository) {
 		this.partyRepository = partyRepository;
 	}
@@ -59,6 +53,15 @@ public class PartyServiceImpl implements PartyService {
 	public MyTrustCircleRepository getMyTrustCircleRepository() {
 		return myTrustCircleRepository;
 	}
+	
+	public ProductRequestRepository getProductRequestRepository() {
+		return productRequestRepository;
+	}
+
+	public void setProductRequestRepository(ProductRequestRepository productRequestRepository) {
+		this.productRequestRepository = productRequestRepository;
+	}
+	
 	
 
 	@Override
@@ -142,7 +145,7 @@ public class PartyServiceImpl implements PartyService {
 		Party party = partyRepository.findByptyId(partyid);
 		
 		if (party == null ) {
-			throw new PartyNotFoundException("No Product Found");
+			throw new PartyNotFoundException("No Party Found");
 		}
 		LOGGER.debug("Retrieving  party details for paty id "+partyid);
 		JSONObject obj1=new JSONObject();
@@ -185,6 +188,26 @@ public class PartyServiceImpl implements PartyService {
 		
 		
 		}
+
+	@Transactional
+	@Override
+	public Boolean createRequest(int ptyid, int prdid, String catname, String proddesc) {
+		
+		if(!(ptyid==0)){
+			
+			LOGGER.debug("creating request for the product id "+prdid+"catname "+"productdescription "+proddesc);
+			ProductRequest prdreq=new ProductRequest();
+			prdreq.setPartyPtyId(ptyid);
+			prdreq.setProductPrdId(prdid);
+			prdreq.setProductCatName(catname);
+			prdreq.setProductDesc(proddesc);
+			productRequestRepository.saveAndFlush(prdreq);
+			LOGGER.debug("requesting done");
+			return true;
+		}
+		
+		return false;
+	}
 
 	
 

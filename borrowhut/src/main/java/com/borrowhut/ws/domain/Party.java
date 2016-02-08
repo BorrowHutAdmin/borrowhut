@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * The persistent class for the PARTY database table.
- * 
+ *      
  */
 @Entity
 @Table(name="PARTY")

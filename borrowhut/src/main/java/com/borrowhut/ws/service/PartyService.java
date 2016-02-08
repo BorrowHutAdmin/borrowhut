@@ -1,6 +1,5 @@
 package com.borrowhut.ws.service;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.borrowhut.ws.exception.PartyNotFoundException;
@@ -17,5 +16,7 @@ public interface PartyService {
 	public Boolean registerParty(String ptyName, String ptyMobile, String authToken);
 
 	public JSONObject retrievePartyDetailsById(int partyid) throws PartyNotFoundException;
+
+	public Boolean createRequest(int ptyid, int prdid, String catname, String proddesc);
 
 }

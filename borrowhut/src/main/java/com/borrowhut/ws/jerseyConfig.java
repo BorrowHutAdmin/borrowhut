@@ -11,8 +11,6 @@ import com.borrowhut.ws.contoller.PartyController;
 import com.borrowhut.ws.contoller.ProductController;
 import com.borrowhut.ws.contoller.ProductListingController;
 import com.borrowhut.ws.contoller.UiCardController;
-import com.borrowhut.ws.domain.BorrowLog;
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 
 @Configuration

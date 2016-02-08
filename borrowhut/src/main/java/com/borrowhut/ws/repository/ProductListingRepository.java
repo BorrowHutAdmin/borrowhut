@@ -1,10 +1,6 @@
 package com.borrowhut.ws.repository;
 
-import java.util.Collection;
 import java.util.List;
-
-import javax.inject.Named;
-import javax.persistence.NamedNativeQuery;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

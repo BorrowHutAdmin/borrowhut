@@ -10,5 +10,4 @@ public interface ProductService {
 	float longitude, float distance) throws ProductNotFoundException;
 	public JSONObject getProductRelatedData(int productid) throws ProductNotFoundException;
 	public boolean isProductBelongsToCategory(int parseInt, String cAT_NAME);
-	public Boolean CreateRequest(int ptyid, int prdid, String catname, String proddesc);
 }
