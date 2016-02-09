@@ -15,16 +15,20 @@ import org.springframework.stereotype.Component;
 import com.borrowhut.ws.exception.PartyNotFoundException;
 import com.borrowhut.ws.exception.ProductNotFoundException;
 import com.borrowhut.ws.service.PartyService;
+import com.borrowhut.ws.service.ProductService;
 
 @Component
 @Path("/")
 public class PartyController {
 	
 	private final PartyService partyService;
+	private final ProductService productService;
 	  
 	  @Inject
-	 public PartyController(final PartyService partyService) {
+	 public PartyController(final PartyService partyService, final ProductService productService) {
+		  
 		this.partyService = partyService;
+		this.productService=productService;
 	}
 	  	@Path("/registerCustomer")
 		@POST
@@ -70,7 +74,7 @@ public class PartyController {
 		  if(ptyid==0){
 			  throw new IllegalArgumentException(" input parameter(s) cannot be null or empty");
 		  }else if(!partyService.isParty(ptyid)){
-				throw new IllegalArgumentException("Party id "+ptyid+" is not active user ");
+				throw new PartyNotFoundException("Party id "+ptyid+" is not active user ");
 			}
 		  
 		  
@@ -89,10 +93,40 @@ public class PartyController {
 		  if(partyid==0){
 			  throw new IllegalArgumentException(" input parameter(s) cannot be null or empty");
 		  }else if(!partyService.isParty(partyid)){
-				throw new IllegalArgumentException("Party id "+partyid+" is not active user ");
+				throw new PartyNotFoundException("Party id "+partyid+" is not active user ");
 			}
 		  
 			return partyService.retrievePartyDetailsById(partyid);	  
 	  }
+	  
+	  @Path("/createRequest")
+		@POST
+		@Produces("application/json")
+		public JSONObject getCreateRequest(@Valid JSONObject createreq) throws IllegalAccessException, PartyNotFoundException{
+			
+			int ptyid=Integer.parseInt(createreq.get("PTY_ID").toString());
+			int prdid=Integer.parseInt(createreq.get("PRD_ID").toString());
+			String catname=createreq.get("CAT_NAME").toString();
+			String proddesc=createreq.get("PROD_DESC").toString();
+			
+			System.out.println("ptyid "+ ptyid);
+			System.out.println("prdid "+ prdid);
+			System.out.println("catname "+ catname);
+			System.out.println("proddesc "+ proddesc);
+			
+			
+			if(ptyid == 0){
+				throw new IllegalArgumentException(" input parameter(s) cannot be null or empty");
+			}else if(!partyService.isParty(ptyid)){
+				throw new PartyNotFoundException("Party id "+ptyid+" is not active user ");
+			}/*else if(!productService.isProductBelongsToCategory(prdid,catname)){
+				throw new IllegalArgumentException("Product id "+prdid+" is not blongs to Category id "+catname);
+			}*/
+			
+			Boolean b =productService.CreateRequest(ptyid,prdid,catname,proddesc);
+			JSONObject result = new JSONObject();
+			result.put("result", b == true ? "success" : "failure");
+			return result;
+		}
 
 }
