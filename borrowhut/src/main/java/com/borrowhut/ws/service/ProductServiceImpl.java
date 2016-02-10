@@ -110,12 +110,13 @@ public class ProductServiceImpl implements ProductService {
 				recrod = (Map) itr.next();				
 
 				plsid = Integer.parseInt(recrod.get("PLS_ID").toString());
-				object.put("partyid", Integer.parseInt(recrod.get("PTY_ID").toString()));
+				//object.put("partyid", Integer.parseInt(recrod.get("PTY_ID").toString()));
 				
 				object.put("PLS_ID", Integer.parseInt(recrod.get("PLS_ID").toString()));
 				object.put("PTY_ID", Integer.parseInt(recrod.get("PTY_ID").toString()));
+				object.put("PTY_PHOTO",recrod.get("PTY_PHOTO"));
 				object.put("CAT_NAME", recrod.get("CAT_NAME").toString());
-				object.put("PRD_NAME",recrod.get("PRD_NAME").toString());
+				object.put("PRD_NAME",recrod.get("PRD_NAME").toString());   
 				
 				productdesc = recrod.get("PRD_DESCRIPTION") != null ? recrod.get("PRD_DESCRIPTION").toString() : "null";
 				prdphotolink = recrod.get("PRD_PHOTO_LINK") != null ? recrod.get("PRD_PHOTO_LINK").toString() : "null";
@@ -241,7 +242,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Transactional
 	@Override
-	public Boolean CreateRequest(int ptyid, int prdid, String catname, String proddesc) {
+	public Boolean createRequest(int ptyid, int prdid, String catname, String proddesc) {
 		
 		if(!(ptyid==0)){
 			LOGGER.debug("creating request for the product id "+prdid+"catname "+"productdescription "+proddesc);

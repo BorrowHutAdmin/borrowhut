@@ -85,7 +85,6 @@ public class ProductListingServiceImpl implements ProductListingService {
 		obj.put("PLS_FIRST_CIRCLE_PRICE",prdlist.getPlsFirstCirclePrice());
 		obj.put("PLS_SECOND_CIRCLE_PRICE",prdlist.getPlsSecondCirclePrice());
 		obj.put("PHONE_NUMBER", pty.getPtyMobile());
-		obj.put("EXPIRY_DATE",prdlist.getPlsExpiry().toString());
 		
 		
 		/*JSONArray ftrrecords = new JSONArray();*/

@@ -123,7 +123,7 @@ public class PartyController {
 				throw new IllegalArgumentException("Product id "+prdid+" is not blongs to Category id "+catname);
 			}*/
 			
-			Boolean b =productService.CreateRequest(ptyid,prdid,catname,proddesc);
+			Boolean b =productService.createRequest(ptyid,prdid,catname,proddesc);
 			JSONObject result = new JSONObject();
 			result.put("result", b == true ? "success" : "failure");
 			return result;
