@@ -89,7 +89,6 @@ public class ProductListingSeviceImplTest {
 	prdlist.setPtyId(1);
 	prdlist.setPlsFirstCirclePrice("20");
 	prdlist.setPlsSecondCirclePrice("40");
-	prdlist.setPlsExpiry(date);
 	prdlist.setListedProductFeatures(li);
 	
 	when(prdlist.getParty()).thenReturn(party);	
