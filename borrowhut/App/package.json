@@ -1,0 +1,30 @@
+{
+  "name": "Borrowhut",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^5.8.20",
+    "babel-loader": "^5.3.2",
+    "css-loader": "^0.15.6",
+    "node-sass": "^3.2.0",
+    "sass-loader": "^1.0.4",
+    "style-loader": "^0.12.3",
+    "webpack": "^1.10.5",
+    "webpack-dev-server": "^1.10.1",
+    "webpack-livereload-plugin": "^0.4.0"
+  },
+  "dependencies": {
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0",
+    "react-router": "1.0.0-beta3",
+    "react-swipe-to-reveal-options": "^0.2.0",
+    "react-swiper": "^0.1.5"
+  }
+}

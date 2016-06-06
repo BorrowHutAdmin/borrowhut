@@ -1,0 +1,43 @@
+// Common styles
+html, body, h1, h2, h3, h4, h5, h6, p, ol, ul { margin:0; padding:0;}
+body {
+    background-color:#f3f0e7;
+    color: $primary-font-color;
+    font-family: $font-stack;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+}
+input:focus, button:focus, select:focus, a:focus, a:focus img, textarea:focus {outline:none;}
+textarea {resize:none;}
+input[type="password"], input[type="text"], input[type="submit"], button { border-radius:0; -webkit-appearance:none; appearance:none;}
+img { max-width:100%; vertical-align:middle;}
+a {color:$anchor-color; text-decoration:none;
+    &:hover {color:$linkHoverColor;}
+}
+a, a:focus, a:hover {text-decoration:none;}
+ol, ul { list-style:none;}
+.clear { clear:both;}
+.fL { float:left;}
+.fR {float:right;}
+.padnone {padding:0;}
+
+// Clearfix
+.clearfix {
+    &:before,
+    &:after {
+        content: "";
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+// Type
+p {padding-bottom:15px;}
+
+.container { margin:0 auto; padding-left:15px; padding-right:15px; width:970px;}
+@media (max-width: 1024px){
+	.container{width:auto}
+}
